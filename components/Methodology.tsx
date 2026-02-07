@@ -28,8 +28,9 @@ const Methodology = () => {
                         </p>
                         <ul className="space-y-2 text-sm text-gray-400">
                             <li className="flex items-center gap-2">✓ Identidade Visual Premium</li>
-                            <li className="flex items-center gap-2">✓ Produção de Conteúdo Viral</li>
-                            <li className="flex items-center gap-2">✓ Conexão Emocional</li>
+                            <li className="flex items-center gap-2">✓ Produção de Conteúdo</li>
+                            <li className="flex items-center gap-2">✓ Planejamento de Posts/Stories</li>
+                            <li className="flex items-center gap-2">✓ Análise de Perfil Completa</li>
                         </ul>
                     </motion.div>
 
@@ -50,6 +51,7 @@ const Methodology = () => {
                             <li className="flex items-center gap-2">✓ Tráfego Pago Otimizado</li>
                             <li className="flex items-center gap-2">✓ CRM & Recuperação de Vendas</li>
                             <li className="flex items-center gap-2">✓ Análise de Métricas em Tempo Real</li>
+                            <li className="flex items-center gap-2">✓ Projeção de Resultados</li>
                         </ul>
                     </motion.div>
                 </div>
