@@ -15,6 +15,7 @@ export default function Team() {
                     src="/team-photo.png"
                     alt="Equipe Dua Criativa"
                     fill
+                    sizes="100vw"
                     className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
                 />
             </div>

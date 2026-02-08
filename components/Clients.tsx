@@ -45,6 +45,7 @@ export default function Clients() {
                                 src={logo}
                                 alt={`Client Logo ${index}`}
                                 fill
+                                sizes="(max-width: 768px) 120px, 150px"
                                 className="object-contain"
                             />
                         </div>

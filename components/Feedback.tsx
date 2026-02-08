@@ -14,6 +14,7 @@ export default function Feedback() {
                         src="/feedback-v2.png"
                         alt="Feedback de clientes Dua Criativa"
                         fill
+                        sizes="(max-width: 1024px) 100vw, 896px"
                         className="object-contain"
                     />
                 </div>
