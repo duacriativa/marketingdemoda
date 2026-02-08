@@ -21,7 +21,7 @@ const Footer = () => {
                             <a href="https://www.linkedin.com/company/duacriativa" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-full hover:bg-dualime hover:text-black transition-colors">
                                 <Linkedin size={20} />
                             </a>
-                            <a href="https://wa.me/5585989011558" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-full hover:bg-dualime hover:text-black transition-colors">
+                            <a href="https://wa.me/5585989011558?text=Ol%C3%A1!%20Vi%20o%20site%20da%20Dua%20e%20gostaria%20de%20uma%20reuni%C3%A3o%20estrat%C3%A9gica%20para%20minha%20marca%20de%20moda." target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-full hover:bg-dualime hover:text-black transition-colors">
                                 <MessageCircle size={20} />
                             </a>
                         </div>
@@ -33,7 +33,7 @@ const Footer = () => {
                             <li><Link href="#about" className="text-gray-400 hover:text-dualime transition-colors">Sobre Nós</Link></li>
                             <li><Link href="#services" className="text-gray-400 hover:text-dualime transition-colors">Nossos Serviços</Link></li>
                             <li><Link href="#methodology" className="text-gray-400 hover:text-dualime transition-colors">Método Dua LAB</Link></li>
-                            <li><Link href="#contact" className="text-gray-400 hover:text-dualime transition-colors">Fale Conosco</Link></li>
+                            <li><a href="https://wa.me/5585989011558?text=Ol%C3%A1!%20Vi%20o%20site%20da%20Dua%20e%20gostaria%20de%20uma%20reuni%C3%A3o%20estrat%C3%A9gica%20para%20minha%20marca%20de%20moda." target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-dualime transition-colors">Fale Conosco</a></li>
                         </ul>
                     </div>
 

@@ -31,13 +31,15 @@ const Hero = () => {
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Link
-                            href="#contact"
+                        <a
+                            href="https://wa.me/5585989011558?text=Ol%C3%A1!%20Vi%20o%20site%20da%20Dua%20e%20gostaria%20de%20uma%20reuni%C3%A3o%20estrat%C3%A9gica%20para%20minha%20marca%20de%20moda."
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="group px-8 py-4 bg-dualime text-duabg font-bold text-lg rounded-full hover:bg-white transition-all duration-300 flex items-center gap-2"
                         >
                             Começar Agora
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
+                        </a>
                         <Link
                             href="#services"
                             className="px-8 py-4 border border-white/20 text-white font-medium text-lg rounded-full hover:bg-white/10 transition-colors"
