@@ -37,12 +37,10 @@ const Navbar = () => {
                         </Link>
                     ))}
                     <a
-                        href="https://wa.me/5585989011558?text=Ol%C3%A1!%20Vi%20o%20site%20da%20Dua%20e%20gostaria%20de%20uma%20reuni%C3%A3o%20estrat%C3%A9gica%20para%20minha%20marca%20de%20moda."
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href="https://duacriativa.com.br/quillforms/form-lp-dua"
                         className="px-5 py-2 bg-dualime text-duabg font-bold text-sm rounded-full hover:bg-white transition-colors"
                     >
-                        Fale Conosco
+                        Começar Agora
                     </a>
                 </div>
 
@@ -76,13 +74,11 @@ const Navbar = () => {
                             </Link>
                         ))}
                         <a
-                            href="https://wa.me/5585989011558?text=Ol%C3%A1!%20Vi%20o%20site%20da%20Dua%20e%20gostaria%20de%20uma%20reuni%C3%A3o%20estrat%C3%A9gica%20para%20minha%20marca%20de%20moda."
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            href="https://duacriativa.com.br/quillforms/form-lp-dua"
                             onClick={toggleMenu}
                             className="w-full text-center px-5 py-3 bg-dualime text-duabg font-bold text-base rounded-lg hover:bg-white transition-colors"
                         >
-                            Fale Conosco
+                            Começar Agora
                         </a>
                     </motion.div>
                 )}
