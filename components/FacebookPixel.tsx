@@ -15,6 +15,17 @@ export default function FacebookPixel() {
             .then((ReactPixel) => {
                 ReactPixel.init("2344835272651307"); // Dua ID
                 ReactPixel.pageView();
+
+                // Send to Conversion API
+                fetch("/api/conversion", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        event_name: "PageView",
+                        event_source_url: window.location.href,
+                        user_data: {}, // Add user data if available (email, phone, etc.)
+                    }),
+                }).catch((err) => console.error("CAPI Error:", err));
             });
     }, [pathname, loaded]);
 
