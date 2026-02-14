@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Camera, BarChart3, Users, MessageSquare, ShoppingBag, BrainCircuit, Clapperboard, PenTool } from "lucide-react";
 
 const services = [
@@ -12,7 +13,8 @@ const services = [
     {
         icon: <BarChart3 className="w-8 h-8 text-dualime" />,
         title: "Tráfego Pago (Ads)",
-        description: "Criação e otimização de campanhas no Meta e Google Ads focadas em ROI e vendas reais."
+        description: "Criação e otimização de campanhas no Meta e Google Ads focadas em ROI e vendas reais.",
+        link: "/trafegopago"
     },
     {
         icon: <BrainCircuit className="w-8 h-8 text-dualime" />,
@@ -63,24 +65,53 @@ const Services = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {services.map((service, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-dualime/50 transition-colors group hover:-translate-y-2 duration-300"
-                        >
-                            <div className="mb-6 p-4 rounded-full bg-white/5 w-fit group-hover:bg-dualime/20 transition-colors">
-                                {service.icon}
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
-                            <p className="text-gray-400 leading-relaxed text-sm">
-                                {service.description}
-                            </p>
-                        </motion.div>
-                    ))}
+                    {services.map((service, index) => {
+                        const cardContent = (
+                            <>
+                                <div className="mb-6 p-4 rounded-full bg-white/5 w-fit group-hover:bg-dualime/20 transition-colors">
+                                    {service.icon}
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                                    {service.title}
+                                    {/* @ts-ignore */}
+                                    {service.link && <span className="text-xs bg-dualime text-black px-2 py-0.5 rounded-full">Novo</span>}
+                                </h3>
+                                <p className="text-gray-400 leading-relaxed text-sm">
+                                    {service.description}
+                                </p>
+                            </>
+                        );
+
+                        // @ts-ignore
+                        if (service.link) {
+                            return (
+                                <Link key={index} href={service.link} className="block group">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.1 }}
+                                        className="h-full p-8 rounded-2xl bg-white/5 border border-white/10 group-hover:border-dualime/50 transition-colors group-hover:-translate-y-2 duration-300 cursor-pointer"
+                                    >
+                                        {cardContent}
+                                    </motion.div>
+                                </Link>
+                            );
+                        }
+
+                        return (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-dualime/50 transition-colors group hover:-translate-y-2 duration-300"
+                            >
+                                {cardContent}
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </div>
         </section>
