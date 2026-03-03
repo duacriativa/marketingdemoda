@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google"; // Changed from Geist to Montserrat
 import Script from "next/script";
 import FacebookPixel from "@/components/FacebookPixel";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -68,6 +69,7 @@ export default function RootLayout({
           />
         </noscript>
         {children}
+        <WhatsAppButton />
       </body>
     </html >
   );
