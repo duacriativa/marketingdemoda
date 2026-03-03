@@ -3,8 +3,16 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { pushEvent } from "@/lib/gtm";
 
 const Hero = () => {
+    const handleCTAClick = () => {
+        pushEvent("click_lead", {
+            button_location: "hero",
+            button_text: "Começar Agora"
+        });
+    };
+
     return (
         <section className="relative min-h-screen flex items-center justify-center bg-duabg overflow-hidden pt-20">
             {/* Background Elements */}
@@ -33,6 +41,7 @@ const Hero = () => {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <a
                             href="https://duacriativa.com.br/quillforms/form-lp-dua"
+                            onClick={handleCTAClick}
                             className="group px-8 py-4 bg-dualime text-duabg font-bold text-lg rounded-full hover:bg-white transition-all duration-300 flex items-center gap-2"
                         >
                             Começar Agora

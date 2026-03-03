@@ -4,9 +4,17 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { pushEvent } from "@/lib/gtm";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+
+    const handleCTAClick = (location: string) => {
+        pushEvent("click_lead", {
+            button_location: `navbar_${location}`,
+            button_text: "Começar Agora"
+        });
+    };
 
     const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -38,6 +46,7 @@ const Navbar = () => {
                     ))}
                     <a
                         href="https://duacriativa.com.br/quillforms/form-lp-dua"
+                        onClick={() => handleCTAClick("desktop")}
                         className="px-5 py-2 bg-dualime text-duabg font-bold text-sm rounded-full hover:bg-white transition-colors"
                     >
                         Começar Agora
@@ -75,7 +84,10 @@ const Navbar = () => {
                         ))}
                         <a
                             href="https://duacriativa.com.br/quillforms/form-lp-dua"
-                            onClick={toggleMenu}
+                            onClick={() => {
+                                handleCTAClick("mobile");
+                                toggleMenu();
+                            }}
                             className="w-full text-center px-5 py-3 bg-dualime text-duabg font-bold text-base rounded-lg hover:bg-white transition-colors"
                         >
                             Começar Agora

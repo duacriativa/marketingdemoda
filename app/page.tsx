@@ -1,3 +1,5 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Clients from "@/components/Clients";
@@ -6,8 +8,16 @@ import Methodology from "@/components/Methodology";
 import Team from "@/components/Team";
 import Feedback from "@/components/Feedback";
 import Footer from "@/components/Footer";
+import { pushEvent } from "@/lib/gtm";
 
 export default function Home() {
+  const handleCTAClick = () => {
+    pushEvent("click_lead", {
+      button_location: "footer_cta",
+      button_text: "Solicitar Orçamento"
+    });
+  };
+
   return (
     <main className="min-h-screen bg-duabg text-white selection:bg-dualime selection:text-black">
       <Navbar />
@@ -29,6 +39,7 @@ export default function Home() {
           </p>
           <a
             href="https://duacriativa.com.br/quillforms/form-lp-dua"
+            onClick={handleCTAClick}
             className="inline-block px-10 py-5 bg-black text-white font-bold text-xl rounded-full hover:scale-105 transition-transform shadow-xl"
           >
             Solicitar Orçamento
