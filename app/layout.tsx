@@ -14,6 +14,9 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Dua Criativa - Agência de Marketing para Moda",
   description: "A Dua é a agência que pensa como sócia, executa como time interno e estrutura marcas de moda para escalar sem improviso.",
+  verification: {
+    google: "2JeGSizER7sVoZ7Iz709zxnxIxCEaefY5rfqrE9IClg",
+  },
 };
 
 export default function RootLayout({
