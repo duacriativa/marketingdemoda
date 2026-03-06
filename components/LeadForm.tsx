@@ -182,8 +182,8 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
                 )}
                 {isDuaCriativa && (
                     <div>
-                        <label htmlFor="instagram" className="block text-sm font-medium text-gray-700">
-                            Qual o instagram da sua marca? *
+                        <label htmlFor="instagram" className="block text-sm font-medium text-gray-700 whitespace-nowrap">
+                            Instagram da sua marca *
                         </label>
                         <input
                             {...register('instagram')}
