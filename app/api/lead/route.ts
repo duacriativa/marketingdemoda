@@ -17,6 +17,8 @@ export async function POST(request: Request) {
         const isSunliv = body.clientSlug === 'sunliv' || body.clientSlug === 'sunliv-moda-praia-atacado';
         const isLibertyJeans = body.clientSlug === 'liberty-jeans';
         const isAmoAtacado = body.clientSlug === 'amo-atacado';
+        const isAgencyBrand = body.clientSlug === 'amo-atacado' || body.clientSlug === 'dua-criativa';
+        const isDuaCriativa = body.clientSlug === 'dua-criativa';
 
         let webhookUrl = process.env.LEADS_WEBHOOK_URL;
 
@@ -50,7 +52,7 @@ export async function POST(request: Request) {
         }
 
         // 2. Email Notification
-        if ((isSunliv || isLibertyJeans || isAmoAtacado) && process.env.SMTP_PASS) {
+        if ((isSunliv || isLibertyJeans || isAgencyBrand) && process.env.SMTP_PASS) {
             let clientEmail = 'comercial@amoatacado.com.br';
             let clientName = 'Amo Atacado';
 
@@ -60,6 +62,9 @@ export async function POST(request: Request) {
             } else if (isLibertyJeans) {
                 clientEmail = 'libertyjeansoficial@gmail.com';
                 clientName = 'Liberty Jeans';
+            } else if (isDuaCriativa) {
+                clientEmail = 'suporte@duacriativa.com';
+                clientName = 'Dua Criativa';
             }
 
             const transporter = nodemailer.createTransport({
@@ -82,22 +87,29 @@ export async function POST(request: Request) {
                     html: `
                         <div style="font-family: sans-serif; max-width: 600px;">
                             <h2 style="color: #0A3D4D;">Novo Lead Recebido - ${clientName}</h2>
-                            <p><strong>Nome:</strong> ${body.name}</p>
-                            <p><strong>Email:</strong> ${body.email}</p>
-                            <p><strong>WhatsApp:</strong> ${body.phone}</p>
-                            <p><strong>Empresa:</strong> ${body.companyName || 'Não informado'}</p>
-                            
-                            ${body.businessType ? `<p><strong>Tipo de Negócio:</strong> ${body.businessType}</p>` : ''}
-                            ${body.monthlyRevenue ? `<p><strong>Faturamento:</strong> ${body.monthlyRevenue}</p>` : ''}
-                            ${body.mainChallenge ? `<p><strong>Principal Desafio:</strong> ${body.mainChallenge}</p>` : ''}
-                            
-                            ${body.modelType ? `<p><strong>Modelo:</strong> ${body.modelType}</p>` : ''}
-                            ${body.brandMoment ? `<p><strong>Momento da Marca:</strong> ${body.brandMoment}</p>` : ''}
-                            ${body.orderVolume ? `<p><strong>Volume:</strong> ${body.orderVolume}</p>` : ''}
-                            ${body.mainFocus ? `<p><strong>Foco:</strong> ${body.mainFocus}</p>` : ''}
-                            ${body.startDate ? `<p><strong>Previsão Início:</strong> ${body.startDate}</p>` : ''}
-                            
-                            <p><strong>Data/Hora:</strong> ${new Date().toLocaleString('pt-BR')}</p>
+                            ${isDuaCriativa ? `
+                                <p><strong>Nome:</strong> ${body.name}</p>
+                                <p><strong>Telefone:</strong> ${body.phone}</p>
+                                <p><strong>Email:</strong> ${body.email}</p>
+                                <p><strong>Instagram:</strong> ${body.instagram || 'Não informado'}</p>
+                                <p><strong>Modelo de Negocio:</strong> ${body.businessModel || 'Não informado'}</p>
+                                <p><strong>Faturamento:</strong> ${body.duaRevenue || 'Não informado'}</p>
+                            ` : `
+                                <p><strong>Nome:</strong> ${body.name}</p>
+                                <p><strong>Email:</strong> ${body.email}</p>
+                                <p><strong>WhatsApp:</strong> ${body.phone}</p>
+                                <p><strong>Empresa:</strong> ${body.companyName || 'Não informado'}</p>
+                                
+                                ${body.businessType ? `<p><strong>Tipo de Negócio:</strong> ${body.businessType}</p>` : ''}
+                                ${body.monthlyRevenue ? `<p><strong>Faturamento:</strong> ${body.monthlyRevenue}</p>` : ''}
+                                ${body.mainChallenge ? `<p><strong>Principal Desafio:</strong> ${body.mainChallenge}</p>` : ''}
+                                
+                                ${body.modelType ? `<p><strong>Modelo:</strong> ${body.modelType}</p>` : ''}
+                                ${body.brandMoment ? `<p><strong>Momento da Marca:</strong> ${body.brandMoment}</p>` : ''}
+                                ${body.orderVolume ? `<p><strong>Volume:</strong> ${body.orderVolume}</p>` : ''}
+                                ${body.mainFocus ? `<p><strong>Foco:</strong> ${body.mainFocus}</p>` : ''}
+                                ${body.startDate ? `<p><strong>Previsão Início:</strong> ${body.startDate}</p>` : ''}
+                            `}
                             <hr />
                             <div style="font-size: 12px; color: #666; background: #f9f9f9; padding: 10px; border-radius: 5px;">
                                 <p><strong>UTMs:</strong></p>
@@ -121,7 +133,7 @@ export async function POST(request: Request) {
             backupUrl = process.env.LIBERTY_JEANS_BACKUP_URL;
         } else if (isSunliv && (process.env.SUNLIV_BACKUP_URL || process.env.LEADS_BACKUP_sunliv)) {
             backupUrl = process.env.SUNLIV_BACKUP_URL || process.env.LEADS_BACKUP_sunliv;
-        } else if (isAmoAtacado && process.env.LEADS_BACKUP_amo_atacado) {
+        } else if (isAgencyBrand && process.env.LEADS_BACKUP_amo_atacado) {
             backupUrl = process.env.LEADS_BACKUP_amo_atacado;
         }
 

@@ -19,6 +19,9 @@ const schema = z.object({
     businessType: z.string().optional(),
     monthlyRevenue: z.string().optional(),
     mainChallenge: z.string().optional(),
+    instagram: z.string().optional(),
+    businessModel: z.string().optional(),
+    duaRevenue: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -31,6 +34,7 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
 
     const isLibertyJeans = clientSlug === 'liberty-jeans';
     const isAmoAtacado = clientSlug === 'amo-atacado';
+    const isDuaCriativa = clientSlug === 'dua-criativa';
 
     const {
         register,
@@ -120,28 +124,28 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
             <div className="grid md:grid-cols-2 gap-4">
                 <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                        Nome *
+                        {isDuaCriativa ? 'Nome e Sobrenome *' : 'Nome *'}
                     </label>
                     <input
                         {...register('name')}
                         id="name"
                         type="text"
                         placeholder="Seu nome completo"
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                     {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
                 </div>
 
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                        Email *
+                        {isDuaCriativa ? 'Seu melhor Email *' : 'Email *'}
                     </label>
                     <input
                         {...register('email')}
                         id="email"
                         type="email"
                         placeholder="seu@email.com"
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                     {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
                 </div>
@@ -150,30 +154,46 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
             <div className="grid md:grid-cols-2 gap-4">
                 <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                        Telefone (WhatsApp) *
+                        {isDuaCriativa ? 'Seu Whatsapp *' : 'Telefone (WhatsApp) *'}
                     </label>
                     <input
                         {...register('phone')}
                         id="phone"
                         type="tel"
                         placeholder="(00) 00000-0000"
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                     {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>}
                 </div>
 
-                <div>
-                    <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
-                        {isAmoAtacado ? 'Nome da sua Marca' : 'Nome da Loja / Marca'}
-                    </label>
-                    <input
-                        {...register('companyName')}
-                        id="companyName"
-                        type="text"
-                        placeholder="Opcional"
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    />
-                </div>
+                {!isDuaCriativa && (
+                    <div>
+                        <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
+                            {isAmoAtacado ? 'Nome da sua Marca' : 'Nome da Loja / Marca'}
+                        </label>
+                        <input
+                            {...register('companyName')}
+                            id="companyName"
+                            type="text"
+                            placeholder="Opcional"
+                            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        />
+                    </div>
+                )}
+                {isDuaCriativa && (
+                    <div>
+                        <label htmlFor="instagram" className="block text-sm font-medium text-gray-700">
+                            Qual o instagram da sua marca? *
+                        </label>
+                        <input
+                            {...register('instagram')}
+                            id="instagram"
+                            type="text"
+                            placeholder="@suamarca"
+                            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        />
+                    </div>
+                )}
             </div>
 
             {isAmoAtacado && (
@@ -186,7 +206,7 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
                             </label>
                             <select
                                 {...register('businessType')}
-                                className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                             >
                                 <option value="">Selecione...</option>
                                 <option value="Confecção / Indústria">Confecção / Indústria</option>
@@ -203,7 +223,7 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
                             </label>
                             <select
                                 {...register('monthlyRevenue')}
-                                className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                             >
                                 <option value="">Selecione...</option>
                                 <option value="Iniciante (R$ 0 a R$ 10k)">Iniciante (Até R$ 10k)</option>
@@ -220,7 +240,7 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
                         </label>
                         <select
                             {...register('mainChallenge')}
-                            className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                            className="block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                         >
                             <option value="">Selecione...</option>
                             <option value="Escalar Vendas">Escalar Vendas</option>
@@ -228,6 +248,44 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
                             <option value="Tráfego Qualificado">Tráfego Qualificado</option>
                             <option value="Estruturação Comercial">Estruturação Comercial</option>
                         </select>
+                    </div>
+                </>
+            )}
+
+            {isDuaCriativa && (
+                <>
+                    <hr className="my-4 border-slate-100" />
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Qual modelo de negócio: *
+                            </label>
+                            <select
+                                {...register('businessModel')}
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                            >
+                                <option value="">Selecione...</option>
+                                <option value="varejo">Varejo</option>
+                                <option value="atacado">Atacado</option>
+                                <option value="varejo_e_atacado">Varejo e Atacado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Faturamento Médio Mensal: *
+                            </label>
+                            <select
+                                {...register('duaRevenue')}
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                            >
+                                <option value="">Selecione...</option>
+                                <option value="Ate 10k">Até 10k</option>
+                                <option value="Ate 25k">Até 25k</option>
+                                <option value="Ate 50k">Até 50k</option>
+                                <option value="Ate 100k">Até 100k</option>
+                                <option value="+ de 100k">+ de 100k</option>
+                            </select>
+                        </div>
                     </div>
                 </>
             )}
@@ -243,7 +301,7 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
                             </label>
                             <select
                                 {...register('modelType')}
-                                className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                             >
                                 <option value="">Selecione...</option>
                                 <option value="White Label">White Label</option>
@@ -258,7 +316,7 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
                             </label>
                             <select
                                 {...register('brandMoment')}
-                                className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                             >
                                 <option value="">Selecione...</option>
                                 <option value="Estou começando agora">Estou começando agora</option>
@@ -275,7 +333,7 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
                             </label>
                             <select
                                 {...register('orderVolume')}
-                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                             >
                                 <option value="">Selecione...</option>
                                 <option value="Até 50 peças">Até 50 peças</option>
@@ -291,7 +349,7 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
                             </label>
                             <select
                                 {...register('mainFocus')}
-                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                             >
                                 <option value="">Selecione...</option>
                                 <option value="Atacado">Atacado</option>
@@ -307,7 +365,7 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
                         </label>
                         <select
                             {...register('startDate')}
-                            className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                            className="block w-full rounded-md border border-gray-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                         >
                             <option value="">Selecione...</option>
                             <option value="Imediato">Imediato</option>
@@ -324,10 +382,10 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full rounded-md px-4 py-3 text-white font-bold transition-all shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 ${isLibertyJeans ? 'bg-blue-600 hover:bg-blue-700' : 'bg-slate-900 hover:bg-slate-800'
+                className={`w-full rounded-md px-4 py-3 text-white font-bold transition-all shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 ${isLibertyJeans ? 'bg-blue-600 hover:bg-blue-700' : isDuaCriativa ? 'bg-dualime text-black hover:bg-[#bbf000]' : 'bg-slate-900 hover:bg-slate-800'
                     }`}
             >
-                {isSubmitting ? 'Enviando...' : isLibertyJeans ? 'Enviar Solicitação' : 'Quero revender'}
+                {isSubmitting ? 'Enviando...' : isLibertyJeans ? 'Enviar Solicitação' : isDuaCriativa ? 'Solicitar Orçamento' : 'Quero revender'}
             </button>
 
             {isLibertyJeans && (
