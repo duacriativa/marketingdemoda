@@ -382,7 +382,7 @@ export default function LeadForm({ clientSlug }: { clientSlug?: string }) {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full rounded-md px-4 py-3 text-white font-bold transition-all shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 ${isLibertyJeans ? 'bg-blue-600 hover:bg-blue-700' : isDuaCriativa ? 'bg-dualime text-black hover:bg-[#bbf000]' : 'bg-slate-900 hover:bg-slate-800'
+                className={`w-full rounded-md px-4 py-3 text-white font-bold transition-all shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 ${isLibertyJeans ? 'bg-blue-600 hover:bg-blue-700' : isDuaCriativa ? 'bg-[#25D366] hover:bg-[#20bd5c]' : 'bg-slate-900 hover:bg-slate-800'
                     }`}
             >
                 {isSubmitting ? 'Enviando...' : isLibertyJeans ? 'Enviar Solicitação' : isDuaCriativa ? 'Solicitar Orçamento' : 'Quero revender'}
