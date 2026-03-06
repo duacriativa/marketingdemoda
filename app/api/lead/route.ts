@@ -83,18 +83,32 @@ export async function POST(request: Request) {
                 transporter.sendMail({
                     from: `"${clientName} Leads" <comercial@amoatacado.com.br>`,
                     to: clientEmail,
-                    subject: `Novo Lead ${clientName}: ${body.name}`,
+                    subject: isDuaCriativa ? 'Respostas do Formulário' : `Novo Lead ${clientName}: ${body.name}`,
                     html: `
                         <div style="font-family: sans-serif; max-width: 600px;">
-                            <h2 style="color: #0A3D4D;">Novo Lead Recebido - ${clientName}</h2>
                             ${isDuaCriativa ? `
-                                <p><strong>Nome:</strong> ${body.name}</p>
-                                <p><strong>Telefone:</strong> ${body.phone}</p>
-                                <p><strong>Email:</strong> ${body.email}</p>
-                                <p><strong>Instagram:</strong> ${body.instagram || 'Não informado'}</p>
-                                <p><strong>Modelo de Negocio:</strong> ${body.businessModel || 'Não informado'}</p>
-                                <p><strong>Faturamento:</strong> ${body.duaRevenue || 'Não informado'}</p>
+                                <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+                                    <p><strong>Qual é o seu nome?</strong><br />
+                                    ${body.name}</p>
+                                    
+                                    <p><strong>Prazer em te conhecer ${body.name}. Me diga qual o seu modelo de negócio?</strong><br />
+                                    ${body.businessModel || 'Não informado'}</p>
+                                    
+                                    <p><strong>Qual o nome da sua marca de moda?@</strong><br />
+                                    ${body.instagram || 'Não informado'}</p>
+                                    
+                                    <p><strong>Digite o número do seu celular com whatsapp para contato?</strong><br />
+                                    ${body.phone}</p>
+
+                                    <p><strong>${body.name} agora faltam poucas perguntas!</strong></p>
+                                    <p><strong>Informe seu melhor e-mail</strong><br />
+                                    <a href="mailto:${body.email}">${body.email}</a></p>
+                                    
+                                    <p><strong>Chegamos na última pergunta</strong><br />
+                                    ${body.duaRevenue || 'Não informado'}</p>
+                                </div>
                             ` : `
+                                <h2 style="color: #0A3D4D;">Novo Lead Recebido - ${clientName}</h2>
                                 <p><strong>Nome:</strong> ${body.name}</p>
                                 <p><strong>Email:</strong> ${body.email}</p>
                                 <p><strong>WhatsApp:</strong> ${body.phone}</p>
