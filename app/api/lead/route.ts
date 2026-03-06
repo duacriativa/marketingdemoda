@@ -52,7 +52,7 @@ export async function POST(request: Request) {
         }
 
         // 2. Email Notification
-        if ((isSunliv || isLibertyJeans || isAgencyBrand) && process.env.SMTP_PASS) {
+        if ((isSunliv || isLibertyJeans || isAgencyBrand) && (process.env.SMTP_PASS || process.env.DUA_SMTP_PASS)) {
             let clientEmail = 'comercial@amoatacado.com.br';
             let clientName = 'Amo Atacado';
 
