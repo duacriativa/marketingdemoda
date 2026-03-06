@@ -67,21 +67,34 @@ export async function POST(request: Request) {
                 clientName = 'Dua Criativa';
             }
 
-            const transporter = nodemailer.createTransport({
-                host: 'mail.amoatacado.com.br',
-                port: 465,
-                secure: true,
-                auth: {
-                    user: 'comercial@amoatacado.com.br',
-                    pass: process.env.SMTP_PASS,
-                },
-                connectionTimeout: 5000,
-                greetingTimeout: 5000,
-            });
+            // Usar Servidor do Gmail para a Dua Criativa, e Hostinger/Cpanel pra Amo Atacado
+            const transporter = isDuaCriativa
+                ? nodemailer.createTransport({
+                    host: 'smtp.gmail.com', // suporte@duacriativa.com usa Google Workspace/Gmail
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: 'suporte@duacriativa.com',
+                        pass: process.env.DUA_SMTP_PASS || process.env.SMTP_PASS, // Usar senha de app
+                    },
+                    connectionTimeout: 5000,
+                    greetingTimeout: 5000,
+                })
+                : nodemailer.createTransport({
+                    host: 'mail.amoatacado.com.br',
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: 'comercial@amoatacado.com.br',
+                        pass: process.env.SMTP_PASS,
+                    },
+                    connectionTimeout: 5000,
+                    greetingTimeout: 5000,
+                });
 
             tasks.push(
                 transporter.sendMail({
-                    from: `"${clientName} Leads" <comercial@amoatacado.com.br>`,
+                    from: isDuaCriativa ? '"Dua Criativa" <suporte@duacriativa.com>' : `"${clientName} Leads" <comercial@amoatacado.com.br>`,
                     to: clientEmail,
                     subject: isDuaCriativa ? 'Respostas do Formulário' : `Novo Lead ${clientName}: ${body.name}`,
                     html: `
