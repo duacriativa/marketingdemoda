@@ -150,6 +150,7 @@ export async function POST(request: Request) {
                     console.log(`[SMTP] Success: Lead from ${body.name} sent to ${clientEmail}`);
                 }).catch(err => {
                     console.error('[SMTP] Failed to send email:', err);
+                    throw err;
                 })
             );
         }
@@ -174,17 +175,22 @@ export async function POST(request: Request) {
                     console.log(`[BACKUP] Success: Lead from ${body.name} sent to backup`);
                 }).catch(err => {
                     console.error('[BACKUP] Failed to send to backup URL:', err);
+                    throw err;
                 })
             );
         }
 
         // Wait for all tasks to complete in parallel
         // We use allSettled to ensure that one failure doesn't block the others or the response
+        let errors: any[] = [];
         if (tasks.length > 0) {
-            await Promise.allSettled(tasks);
+            const results = await Promise.allSettled(tasks);
+            errors = results
+                .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
+                .map(r => String(r.reason?.response || r.reason?.message || r.reason));
         }
 
-        return NextResponse.json({ success: true, message: 'Lead captured successfully' });
+        return NextResponse.json({ success: true, message: 'Lead captured successfully', errors: errors.length > 0 ? errors : undefined });
     } catch (error) {
         console.error('Error processing lead:', error);
         return NextResponse.json(
