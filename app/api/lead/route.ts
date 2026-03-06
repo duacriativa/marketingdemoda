@@ -1,0 +1,201 @@
+import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
+
+export async function POST(request: Request) {
+    try {
+        const body = await request.json();
+
+        // Validate required fields
+        if (!body.name || !body.email || !body.phone) {
+            return NextResponse.json(
+                { error: 'Missing required fields' },
+                { status: 400 }
+            );
+        }
+
+        // 1. Determine which webhook and email settings to use
+        const isSunliv = body.clientSlug === 'sunliv' || body.clientSlug === 'sunliv-moda-praia-atacado';
+        const isLibertyJeans = body.clientSlug === 'liberty-jeans';
+        const isAmoAtacado = body.clientSlug === 'amo-atacado';
+        const isAgencyBrand = body.clientSlug === 'amo-atacado' || body.clientSlug === 'dua-criativa';
+        const isDuaCriativa = body.clientSlug === 'dua-criativa';
+
+        let webhookUrl = process.env.LEADS_WEBHOOK_URL;
+
+        if (isLibertyJeans && process.env.LIBERTY_JEANS_WEBHOOK_URL) {
+            webhookUrl = process.env.LIBERTY_JEANS_WEBHOOK_URL;
+        } else if (isSunliv && process.env.SUNLIV_WEBHOOK_URL) {
+            webhookUrl = process.env.SUNLIV_WEBHOOK_URL;
+        } else if (isAmoAtacado && process.env.AMO_ATACADO_WEBHOOK_URL) {
+            webhookUrl = process.env.AMO_ATACADO_WEBHOOK_URL;
+        }
+
+        // Create a list of background tasks to run in parallel
+        const tasks: Promise<any>[] = [];
+
+        // 1. Webhook
+        if (webhookUrl) {
+            tasks.push(
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ...body,
+                        timestamp: new Date().toISOString(),
+                        source_url: request.url
+                    }),
+                }).catch(err => {
+                    console.error('Error sending lead to webhook:', err);
+                    return null;
+                })
+            );
+        }
+
+        // 2. Email Notification
+        if ((isSunliv || isLibertyJeans || isAgencyBrand) && (process.env.SMTP_PASS || process.env.DUA_SMTP_PASS)) {
+            let clientEmail = 'comercial@amoatacado.com.br';
+            let clientName = 'Amo Atacado';
+
+            if (isSunliv) {
+                clientEmail = 'sunliv@amoatacado.com.br';
+                clientName = 'Sunliv';
+            } else if (isLibertyJeans) {
+                clientEmail = 'libertyjeansoficial@gmail.com';
+                clientName = 'Liberty Jeans';
+            } else if (isDuaCriativa) {
+                clientEmail = 'suporte@duacriativa.com';
+                clientName = 'Dua Criativa';
+            }
+
+            // Usar Servidor do Gmail para a Dua Criativa, e Hostinger/Cpanel pra Amo Atacado
+            const transporter = isDuaCriativa
+                ? nodemailer.createTransport({
+                    host: 'smtp.gmail.com', // suporte@duacriativa.com usa Google Workspace/Gmail
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: 'suporte@duacriativa.com',
+                        pass: process.env.DUA_SMTP_PASS || process.env.SMTP_PASS, // Usar senha de app
+                    },
+                    connectionTimeout: 5000,
+                    greetingTimeout: 5000,
+                })
+                : nodemailer.createTransport({
+                    host: 'mail.amoatacado.com.br',
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: 'comercial@amoatacado.com.br',
+                        pass: process.env.SMTP_PASS,
+                    },
+                    connectionTimeout: 5000,
+                    greetingTimeout: 5000,
+                });
+
+            tasks.push(
+                transporter.sendMail({
+                    from: isDuaCriativa ? '"Dua Criativa" <suporte@duacriativa.com>' : `"${clientName} Leads" <comercial@amoatacado.com.br>`,
+                    to: clientEmail,
+                    subject: isDuaCriativa ? 'Respostas do Formulário' : `Novo Lead ${clientName}: ${body.name}`,
+                    html: `
+                        <div style="font-family: sans-serif; max-width: 600px;">
+                            ${isDuaCriativa ? `
+                                <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+                                    <p><strong>Qual é o seu nome?</strong><br />
+                                    ${body.name}</p>
+                                    
+                                    <p><strong>Prazer em te conhecer ${body.name}. Me diga qual o seu modelo de negócio?</strong><br />
+                                    ${body.businessModel || 'Não informado'}</p>
+                                    
+                                    <p><strong>Qual o nome da sua marca de moda?@</strong><br />
+                                    ${body.instagram || 'Não informado'}</p>
+                                    
+                                    <p><strong>Digite o número do seu celular com whatsapp para contato?</strong><br />
+                                    ${body.phone}</p>
+
+                                    <p><strong>${body.name} agora faltam poucas perguntas!</strong></p>
+                                    <p><strong>Informe seu melhor e-mail</strong><br />
+                                    <a href="mailto:${body.email}">${body.email}</a></p>
+                                    
+                                    <p><strong>Chegamos na última pergunta</strong><br />
+                                    ${body.duaRevenue || 'Não informado'}</p>
+                                </div>
+                            ` : `
+                                <h2 style="color: #0A3D4D;">Novo Lead Recebido - ${clientName}</h2>
+                                <p><strong>Nome:</strong> ${body.name}</p>
+                                <p><strong>Email:</strong> ${body.email}</p>
+                                <p><strong>WhatsApp:</strong> ${body.phone}</p>
+                                <p><strong>Empresa:</strong> ${body.companyName || 'Não informado'}</p>
+                                
+                                ${body.businessType ? `<p><strong>Tipo de Negócio:</strong> ${body.businessType}</p>` : ''}
+                                ${body.monthlyRevenue ? `<p><strong>Faturamento:</strong> ${body.monthlyRevenue}</p>` : ''}
+                                ${body.mainChallenge ? `<p><strong>Principal Desafio:</strong> ${body.mainChallenge}</p>` : ''}
+                                
+                                ${body.modelType ? `<p><strong>Modelo:</strong> ${body.modelType}</p>` : ''}
+                                ${body.brandMoment ? `<p><strong>Momento da Marca:</strong> ${body.brandMoment}</p>` : ''}
+                                ${body.orderVolume ? `<p><strong>Volume:</strong> ${body.orderVolume}</p>` : ''}
+                                ${body.mainFocus ? `<p><strong>Foco:</strong> ${body.mainFocus}</p>` : ''}
+                                ${body.startDate ? `<p><strong>Previsão Início:</strong> ${body.startDate}</p>` : ''}
+                            `}
+                            <hr />
+                            <div style="font-size: 12px; color: #666; background: #f9f9f9; padding: 10px; border-radius: 5px;">
+                                <p><strong>UTMs:</strong></p>
+                                <p>Source: ${body.utm_source || '-'}</p>
+                                <p>Medium: ${body.utm_medium || '-'}</p>
+                                <p>Campaign: ${body.utm_campaign || '-'}</p>
+                            </div>
+                        </div>
+                    `,
+                }).then(() => {
+                    console.log(`[SMTP] Success: Lead from ${body.name} sent to ${clientEmail}`);
+                }).catch(err => {
+                    console.error('[SMTP] Failed to send email:', err);
+                    throw err;
+                })
+            );
+        }
+
+        // 3. Backup delivery (Google Sheets)
+        let backupUrl = process.env.LEADS_BACKUP_URL;
+        if (isLibertyJeans && process.env.LIBERTY_JEANS_BACKUP_URL) {
+            backupUrl = process.env.LIBERTY_JEANS_BACKUP_URL;
+        } else if (isSunliv && (process.env.SUNLIV_BACKUP_URL || process.env.LEADS_BACKUP_sunliv)) {
+            backupUrl = process.env.SUNLIV_BACKUP_URL || process.env.LEADS_BACKUP_sunliv;
+        } else if (isAgencyBrand && process.env.LEADS_BACKUP_amo_atacado) {
+            backupUrl = process.env.LEADS_BACKUP_amo_atacado;
+        }
+
+        if (backupUrl) {
+            tasks.push(
+                fetch(backupUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...body, backup: true }),
+                }).then(() => {
+                    console.log(`[BACKUP] Success: Lead from ${body.name} sent to backup`);
+                }).catch(err => {
+                    console.error('[BACKUP] Failed to send to backup URL:', err);
+                    throw err;
+                })
+            );
+        }
+
+        // Wait for all tasks to complete in parallel
+        // We use allSettled to ensure that one failure doesn't block the others or the response
+        let errors: any[] = [];
+        if (tasks.length > 0) {
+            const results = await Promise.allSettled(tasks);
+            errors = results
+                .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
+                .map(r => String(r.reason?.response || r.reason?.message || r.reason));
+        }
+
+        return NextResponse.json({ success: true, message: 'Lead captured successfully', errors: errors.length > 0 ? errors : undefined });
+    } catch (error) {
+        console.error('Error processing lead:', error);
+        return NextResponse.json(
+            { error: 'Internal Server Error' },
+            { status: 500 }
+        );
+    }
+}
