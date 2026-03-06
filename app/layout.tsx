@@ -41,7 +41,7 @@ export default function RootLayout({
         </Script>
         {/* Google Analytics */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-1TF1L4L29R"
+          src="https://www.googletagmanager.com/gtag/js?id=G-T52TCGJGC9"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -50,7 +50,7 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', 'G-1TF1L4L29R');
+            gtag('config', 'G-T52TCGJGC9');
           `}
         </Script>
         <FacebookPixel />
