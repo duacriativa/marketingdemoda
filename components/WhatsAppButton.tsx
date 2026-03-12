@@ -1,9 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 import { pushEvent } from '@/lib/gtm';
 
 const WhatsAppButton = () => {
+  const pathname = usePathname();
+    if (pathname === '/trafegopago') return null;
+    
     const phoneNumber = '+5585989011558';
     const message = 'Olá! Vi o site da Dua e gostaria de uma reunião estratégica para minha marca de moda.';
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
