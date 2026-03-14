@@ -7,7 +7,7 @@ export default function Hero() {
   return (
     <section
       className="relative min-h-screen flex flex-col justify-center bg-duabg overflow-hidden px-6 pt-24 bg-cover bg-center"
-      style={{ backgroundImage: "url('/hero-bg.jpg')" }}
+      style={{ backgroundImage: "url('/Prancheta%201%20copiar%209.jpg')" }}
     >
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/65" />
@@ -34,23 +34,3 @@ export default function Hero() {
             TODOS OS DIAS.
           </h1>
           <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mb-10 font-medium mx-auto">
-            Agência especializada em marcas de moda. Tráfego pago, social media e CRM integrados para escalar seu faturamento com previsibilidade.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#contato">
-              <button className="bg-dualime text-duabg font-black px-8 py-4 rounded-lg hover:bg-dualime/90 transition flex items-center gap-2">
-                Agendar Consulta
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition" />
-              </button>
-            </a>
-            <a href="#cases">
-              <button className="bg-white/10 text-white font-bold px-8 py-4 rounded-lg hover:bg-white/20 transition">
-                Conhecer Agência
-              </button>
-            </a>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
