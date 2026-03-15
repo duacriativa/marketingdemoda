@@ -13,10 +13,10 @@ export default function Feedback() {
           {/* Coluna esquerda: print de conversa */}
           <div className="flex items-center justify-center">
             <Image
-              src="/feedback.png"
-              alt="Feedback de clientes Dua Criativa"
+              src="/01.png"
+              alt="Depoimento de cliente Dua Criativa"
               width={400}
-              height={600}
+              height={700}
               className="w-full h-auto object-contain rounded-xl"
             />
           </div>
@@ -37,10 +37,10 @@ export default function Feedback() {
           {/* Coluna direita: outro print de conversa */}
           <div className="flex items-center justify-center">
             <Image
-              src="/feedback-v2.png"
-              alt="Feedback de clientes Dua Criativa"
+              src="/02.png"
+              alt="Depoimento de cliente Dua Criativa"
               width={400}
-              height={600}
+              height={700}
               className="w-full h-auto object-contain rounded-xl"
             />
           </div>
