@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Feedback() {
   return (
-    <section className="w-full bg-black py-20">
+    <section className="w-full bg-black py-20" aria-label="Depoimentos de clientes">
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-bold text-white mb-12">
           O QUE DIZEM <br />
@@ -10,23 +10,28 @@ export default function Feedback() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-          {/* Coluna esquerda: print de conversa */}
+          {/* Coluna esquerda: depoimentos */}
           <div className="flex items-center justify-center">
             <Image
               src="/01.png"
-              alt="Depoimento de cliente Dua Criativa"
+              alt="Depoimentos de clientes da Dua Criativa sobre resultados e parceria"
               width={400}
               height={700}
+              loading="lazy"
               className="w-full h-auto object-contain rounded-xl"
             />
           </div>
 
           {/* Coluna central: vídeo YouTube Shorts */}
           <div className="flex items-center justify-center">
-            <div className="relative w-full max-w-[300px] mx-auto rounded-xl overflow-hidden" style={{ aspectRatio: "9/16" }}>
+            <div
+              className="relative w-full max-w-[300px] mx-auto rounded-xl overflow-hidden"
+              style={{ aspectRatio: "9/16" }}
+            >
               <iframe
-                src="https://www.youtube.com/embed/dHfeH66dL8k"
-                title="Dua Criativa - Resultados"
+                src="https://www.youtube.com/embed/dHfeH66dL8k?loading=lazy"
+                title="Dua Criativa - Resultados reais de clientes"
+                loading="lazy"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="absolute inset-0 w-full h-full"
@@ -34,13 +39,14 @@ export default function Feedback() {
             </div>
           </div>
 
-          {/* Coluna direita: outro print de conversa */}
+          {/* Coluna direita: mais depoimentos */}
           <div className="flex items-center justify-center">
             <Image
               src="/02.png"
-              alt="Depoimento de cliente Dua Criativa"
+              alt="Mais depoimentos de clientes da Dua Criativa sobre crescimento digital"
               width={400}
               height={700}
+              loading="lazy"
               className="w-full h-auto object-contain rounded-xl"
             />
           </div>
