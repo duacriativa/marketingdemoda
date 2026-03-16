@@ -43,10 +43,10 @@ export default function Hero() {
           <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-medium mx-auto">
             Agência especializada em marcas de moda. Tráfego pago, social media e CRM integrados para escalar seu faturamento com previsibilidade.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#contato" aria-label="Agendar uma consulta gratuita">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="#contato" aria-label="Quero mais informações sobre a Dua Criativa">
               <button className="bg-dualime text-duabg font-black px-8 py-4 rounded-lg hover:bg-dualime/90 transition flex items-center gap-2">
-                Agendar Consulta
+                Quero mais informações
                 <ArrowRight size={20} aria-hidden="true" />
               </button>
             </a>

@@ -28,7 +28,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 w-full z-50 bg-duabg/90 backdrop-blur-md border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="text-2xl font-bold tracking-tighter text-white">
+        <Link href="/" aria-label="Dua Criativa - Página inicial" className="text-2xl font-bold tracking-tighter text-white">
           DUA<span className="text-dualime">.</span>
         </Link>
 

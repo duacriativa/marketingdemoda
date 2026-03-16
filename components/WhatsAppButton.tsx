@@ -19,7 +19,7 @@ const WhatsAppButton = () => {
         <motion.div
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 1, duration: 0.5 }}
+            transition={{ delay: 0.3, duration: 0.4 }}
             className="fixed bottom-6 right-6 z-50"
         >
             <motion.a

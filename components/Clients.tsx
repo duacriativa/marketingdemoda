@@ -10,12 +10,6 @@ export default function Clients() {
         "/client-logo-3.png",
         "/client-logo-4.png",
         "/client-logo-5.png",
-        // Duplicating for infinite effect
-        "/client-logo-1.png",
-        "/client-logo-2.png",
-        "/client-logo-3.png",
-        "/client-logo-4.png",
-        "/client-logo-5.png",
     ];
 
     return (

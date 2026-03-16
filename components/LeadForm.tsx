@@ -94,7 +94,7 @@ export default function LeadForm({ clientSlug }: { clientSlug: string }) {
         );
         setTimeout(() => {
           window.open(`https://wa.me/${DUA_WA}?text=${msg}`, "_blank");
-        }, 1500);
+        }, 500);
       }
     } catch {
       setError("Ops! Tente novamente ou nos chame no WhatsApp.");
