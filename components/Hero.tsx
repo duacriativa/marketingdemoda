@@ -20,20 +20,34 @@ export default function Hero() {
       />
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/65 z-[1]" />
-      {/* Purple blob PNG - invert(white bg -> black = transparent) + hue-rotate keeps purple */}
-      <div className="absolute z-[2] pointer-events-none" style={{ top: "-5%", right: "-8%", width: "52%", height: "90%" }}>
-        <Image
-          src="/2%202.PNG"
-          alt=""
-          fill
-          className="object-contain object-right-top"
-          style={{
-            filter: "invert(1) hue-rotate(180deg)",
-            mixBlendMode: "screen",
-            opacity: 0.85,
-          }}
-        />
-      </div>
+      {/* Purple blob top-right */}
+      <div
+        className="absolute z-[2] pointer-events-none"
+        style={{
+          top: "-10%",
+          right: "-5%",
+          width: "55vw",
+          height: "70vh",
+          background:
+            "radial-gradient(ellipse 60% 70% at 70% 30%, rgba(120,50,220,0.55) 0%, rgba(100,30,200,0.3) 35%, rgba(80,20,160,0.12) 65%, transparent 85%)",
+          filter: "blur(60px)",
+          mixBlendMode: "screen",
+        }}
+      />
+      {/* Purple blob bottom-left */}
+      <div
+        className="absolute z-[2] pointer-events-none"
+        style={{
+          bottom: "5%",
+          left: "-8%",
+          width: "45vw",
+          height: "55vh",
+          background:
+            "radial-gradient(ellipse 55% 65% at 30% 70%, rgba(140,60,230,0.4) 0%, rgba(90,20,180,0.2) 45%, transparent 80%)",
+          filter: "blur(70px)",
+          mixBlendMode: "screen",
+        }}
+      />
       {/* Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(204,255,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(204,255,0,0.03)_1px,transparent_1px)] bg-[size:50px_50px] z-[3]" />
 
@@ -72,15 +86,15 @@ export default function Hero() {
             Agência especializada em marcas de moda. Tráfego pago, social media e CRM integrados para escalar seu faturamento com previsibilidade.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#contato" aria-label="Agendar uma consulta gratuita">
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+            <a href="#contato" aria-label="Agendar uma consulta gratuita" className="flex justify-center w-full sm:w-auto">
               <button className="bg-dualime text-duabg font-black px-8 py-4 rounded-lg hover:bg-dualime/90 transition flex items-center gap-2">
                 Agendar Consulta
                 <ArrowRight size={20} aria-hidden="true" />
               </button>
             </a>
-            <a href="#cases" aria-label="Conhecer a agência Dua Criativa">
-              <button className="bg-white/10 text-white font-bold px-8 py-4 rounded-lg hover:bg-white/20 transition">
+            <a href="#cases" aria-label="Conhecer a agência Dua Criativa" className="flex justify-center w-full sm:w-auto">
+              <button className="bg-white/10 text-white font-bold px-8 py-4 rounded-lg hover:bg-white/20 transition w-full sm:w-auto">
                 Conhecer Agência
               </button>
             </a>
