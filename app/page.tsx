@@ -1,6 +1,5 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Clients from "@/components/Clients";
 import ParaQuem from "@/components/ParaQuem";
@@ -17,7 +16,6 @@ import LeadForm from "@/components/LeadForm";
 export default function Home() {
   return (
     <main className="min-h-screen bg-duabg text-white selection:bg-dualime selection:text-black">
-      <Navbar />
       <Hero />
       <Clients />
       <ParaQuem />
