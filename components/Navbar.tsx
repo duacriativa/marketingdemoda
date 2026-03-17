@@ -33,7 +33,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link href="/" aria-label="Dua Criativa - Página inicial" className={`flex items-end gap-1 ${unbounded.className}`}>
           <span className="text-2xl font-bold text-white leading-none">dua</span>
-          <span className="w-3.5 h-3.5 rounded-full bg-dualime mb-0.5 shrink-0" aria-hidden="true" />
+          <span className="w-2 h-2 rounded-full bg-dualime mb-1 shrink-0" aria-hidden="true" />
         </Link>
 
         {/* Desktop Menu */}
