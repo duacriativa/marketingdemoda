@@ -9,7 +9,7 @@ const unbounded = Unbounded({ subsets: ["latin"], weight: ["700"] });
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col justify-center bg-duabg overflow-hidden px-6 pt-16">
-      {/* Background image */}
+      {/* Background fashion photo */}
       <Image
         src="/Prancheta%201%20copiar%209.jpg"
         alt="Fashion photoshoot background"
@@ -20,34 +20,20 @@ export default function Hero() {
       />
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/65 z-[1]" />
-      {/* Purple blob top-right */}
-      <div
-        className="absolute z-[2] pointer-events-none"
-        style={{
-          top: "-10%",
-          right: "-5%",
-          width: "55vw",
-          height: "70vh",
-          background:
-            "radial-gradient(ellipse 60% 70% at 70% 30%, rgba(120,50,220,0.55) 0%, rgba(100,30,200,0.3) 35%, rgba(80,20,160,0.12) 65%, transparent 85%)",
-          filter: "blur(60px)",
-          mixBlendMode: "screen",
-        }}
-      />
-      {/* Purple blob bottom-left */}
-      <div
-        className="absolute z-[2] pointer-events-none"
-        style={{
-          bottom: "5%",
-          left: "-8%",
-          width: "45vw",
-          height: "55vh",
-          background:
-            "radial-gradient(ellipse 55% 65% at 30% 70%, rgba(140,60,230,0.4) 0%, rgba(90,20,180,0.2) 45%, transparent 80%)",
-          filter: "blur(70px)",
-          mixBlendMode: "screen",
-        }}
-      />
+      {/* Purple blob PNG - invert(white bg -> black = transparent) + hue-rotate keeps purple */}
+      <div className="absolute z-[2] pointer-events-none" style={{ top: "-5%", right: "-8%", width: "52%", height: "90%" }}>
+        <Image
+          src="/2%202.PNG"
+          alt=""
+          fill
+          className="object-contain object-right-top"
+          style={{
+            filter: "invert(1) hue-rotate(180deg)",
+            mixBlendMode: "screen",
+            opacity: 0.85,
+          }}
+        />
+      </div>
       {/* Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(204,255,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(204,255,0,0.03)_1px,transparent_1px)] bg-[size:50px_50px] z-[3]" />
 
