@@ -49,8 +49,6 @@ export default function DuaLab() {
                 </p>
               </div>
               <div className="bg-black text-dualime rounded-2xl px-6 py-4 text-center flex-shrink-0">
-                <div className="text-3xl font-black">R$ 5.200</div>
-                <div className="text-xs text-dualime/70 mt-1">por mês · contrato flexível</div>
               </div>
             </div>
 
