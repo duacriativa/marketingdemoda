@@ -10,7 +10,6 @@ const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "600", "700", "900"],
 });
-
 export const metadata: Metadata = {
   title: "Dua Criativa - Agência de Marketing para Moda",
   description: "A Dua é a agência que pensa como sócia, executa como time interno e estrutura marcas de moda para escalar sem improviso.",
@@ -36,7 +35,7 @@ export default function RootLayout({
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-T9WQ7M6S');
+            })(window,document,'script''dataLayer','GTM-T9WQ7M65');
           `}
         </Script>
         <Script
@@ -52,7 +51,7 @@ export default function RootLayout({
         <FacebookPixel />
         <noscript>
           <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-T9WQ7M6S"
+            src="https://www.googletagmanager.com/ns.html?id=GTM-T9WQ7M65"
             height="0"
             width="0"
             style={{ display: "none", visibility: "hidden" }}
