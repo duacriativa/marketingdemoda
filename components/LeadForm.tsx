@@ -90,7 +90,7 @@ export default function LeadForm({ clientSlug }: { clientSlug: string }) {
       if (isDuaCriativa) {
         trackPixelLead(form.faturamento);
         const msg = encodeURIComponent(
-          `Olá! Me chamo ${form.name} e acabei de preencher o formulário da Dua Criativa.\n\nFaturamento: ${form.faturamento}\nModelo de venda: ${form.modelo}\n\nQuero agendar minha reunião estratégica!`
+          `Olá! Me chamo ${form.name} e acabei de preencher o formulário da Dua Criativa.\n\nInstagram: ${form.instagram}\nFaturamento: ${form.faturamento}\nModelo de venda: ${form.modelo}\n\nQuero agendar minha reunião estratégica!`
         );
         setTimeout(() => {
           window.open(`https://wa.me/${DUA_WA}?text=${msg}`, "_blank");
@@ -169,22 +169,20 @@ export default function LeadForm({ clientSlug }: { clientSlug: string }) {
         />
       </div>
 
-      {/* Instagram — apenas se NÃO for Dua Criativa */}
-      {!isDuaCriativa && (
-        <div>
-          <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide">
-            Instagram da marca
-          </label>
-          <input
-            type="text"
-            name="instagram"
-            value={form.instagram}
-            onChange={handleChange}
-            placeholder="@suamarca"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-dualime transition-colors"
-          />
-        </div>
-      )}
+      {/* Instagram */}
+      <div>
+        <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide">
+          Insta da sua marca:
+        </label>
+        <input
+          type="text"
+          name="instagram"
+          value={form.instagram}
+          onChange={handleChange}
+          placeholder="@suamarca"
+          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-dualime transition-colors"
+        />
+      </div>
 
       {/* Faturamento */}
       <div>
