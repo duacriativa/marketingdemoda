@@ -1,6 +1,10 @@
 "use client";
 
 import { ArrowRight, CheckCircle, Star } from "lucide-react";
+import Link from "next/link";
+import { Unbounded } from "next/font/google";
+
+const unbounded = Unbounded({ subsets: ["latin"], weight: ["700"] });
 
 const WA_LINK = "https://wa.me/5585989011558?text=Ol%C3%A1!%20Vi%20o%20site%20da%20Dua%20e%20gostaria%20de%20uma%20reuni%C3%A3o%20estrat%C3%A9gica%20para%20minha%20marca%20de%20moda.";
 
@@ -22,6 +26,11 @@ export default function TrafegoPageV2() {
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#ff6600]/10 rounded-full blur-[120px]" />
         </div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
+          <Link href="/" className={`inline-flex items-end justify-center gap-1 mb-10 hover:opacity-80 transition-opacity ${unbounded.className}`}>
+            <span className="text-3xl font-bold text-white leading-none">dua</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#ccff00] mb-1 shrink-0" />
+          </Link>
+          <br />
           <span className="inline-block bg-[#ccff00]/10 text-[#ccff00] border border-[#ccff00]/30 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
             Especialistas em moda — Meta Ads · Google · TikTok
           </span>
