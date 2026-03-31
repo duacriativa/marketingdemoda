@@ -6,9 +6,9 @@ import { useSearchParams } from "next/navigation";
 const DUA_WA = "5585989011558";
 
 const FATURAMENTO_OPTIONS = [
-  "Menos de R$ 15k/mês",
-  "R$ 15k – R$ 50k/mês",
-  "R$ 50k – R$ 150k/mês",
+  "Menos de R$ 50k/mês",
+  "R$ 50k – R$ 100k/mês",
+  "R$ 100k – R$ 150k/mês",
   "Acima de R$ 150k/mês",
 ];
 

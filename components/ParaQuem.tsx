@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { CheckCircle, XCircle, ArrowRight } from "lucide-react";
 
 const SIM = [
-  "Fatura acima de R$ 15k/mês com sua marca",
+  "Fatura acima de R$ 50k/mês com sua marca",
   "Quer escalar com previsibilidade e estratégia",
   "Já investe em marketing mas quer mais resultado",
   "Busca uma agência que entenda de moda de verdade",
