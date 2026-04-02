@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, whatsapp, email, faturamento, modelo, source } = body;
+    const { name, whatsapp, email, instagram, faturamento, modelo, source } = body;
 
     // Extrair UTMs da URL de origem
     let utmSource = "-";
@@ -39,6 +39,9 @@ ${whatsapp}
 
 Informe seu melhor e-mail
 ${email}
+
+Insta da sua marca:
+${instagram || "Não informado"}
 
 Qual o seu faturamento mensal?
 ${faturamento}
