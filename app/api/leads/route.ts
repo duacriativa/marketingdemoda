@@ -75,6 +75,7 @@ Campaign: ${utmCampaign}`;
           faturamento,
           modelo,
           clientSlug: body.clientSlug || "dua-criativa",
+          stageName: body.stageName || "Novo Cadastro",
           utmSource,
           utmMedium,
           utmCampaign,

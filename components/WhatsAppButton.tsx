@@ -13,6 +13,22 @@ const WhatsAppButton = () => {
             button_location: 'floating_whatsapp',
             button_text: 'WhatsApp Button'
         });
+
+        // Registra clique no CRM como lead na etapa "Botão Whatsapp do Site"
+        const now = new Date();
+        const label = `Visitante WPP ${now.toLocaleDateString('pt-BR')} ${now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+        fetch("https://renewed-youth-production-7d32.up.railway.app/api/v1/webhooks/lead", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: label,
+                clientSlug: "dua-criativa",
+                stageName: "Botão Whatsapp do Site",
+                utmSource: new URLSearchParams(window.location.search).get("utm_source") || "-",
+                utmMedium: new URLSearchParams(window.location.search).get("utm_medium") || "-",
+                utmCampaign: new URLSearchParams(window.location.search).get("utm_campaign") || "-",
+            }),
+        }).catch(() => {});
     };
 
     return (
