@@ -62,6 +62,28 @@ Campaign: ${utmCampaign}`;
       text: emailBody,
     });
 
+    // Envia lead para o Dua CRM
+    try {
+      await fetch("https://renewed-youth-production-7d32.up.railway.app/api/v1/webhooks/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          whatsapp,
+          email,
+          instagram,
+          faturamento,
+          modelo,
+          clientSlug: body.clientSlug || "dua-criativa",
+          utmSource,
+          utmMedium,
+          utmCampaign,
+        }),
+      });
+    } catch (e) {
+      console.error("CRM webhook error:", e);
+    }
+
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Lead API error:", error);
