@@ -519,7 +519,7 @@ export default function TrafegoForm() {
       origem: "trafegopago-form",
     };
     try {
-      await fetch("https://crm.duacriativa.com.br/api/v1/leads", {
+      await fetch("/api/trafego-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
