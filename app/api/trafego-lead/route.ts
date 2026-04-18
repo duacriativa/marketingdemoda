@@ -55,14 +55,21 @@ Origem: ${origem ?? "trafegopago-form"}`;
 
     // ── CRM ────────────────────────────────────────────────────────────────
     try {
-      await fetch("https://renewed-youth-production-7d32.up.railway.app/api/v1/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...body, origem: origem ?? "trafegopago-form" }),
-      });
+      const crmRes = await fetch(
+        "https://renewed-youth-production-7d32.up.railway.app/api/v1/leads",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...body, origem: origem ?? "trafegopago-form" }),
+        }
+      );
+      if (!crmRes.ok) {
+        const errText = await crmRes.text();
+        console.error("CRM lead error:", crmRes.status, errText);
+      }
     } catch (crmErr) {
       // CRM não bloqueia — email já foi enviado
-            console.error("CRM fetch failed:", crmErr);
+      console.error("CRM fetch failed:", crmErr);
     }
 
     return NextResponse.json({ ok: true });

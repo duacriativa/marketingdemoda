@@ -297,16 +297,15 @@ function ProvaScreen({ onNext }: { onNext: () => void }) {
   return (
     <div>
       <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-3">
-        Resultado real
+        Isso já funcionou para uma marca igual à sua.
       </h2>
       <p className="text-gray-600 mb-6 leading-relaxed">
-        Uma marca de moda feminina premium de Fortaleza entrou com{" "}
-        <strong>R$36.866/mês</strong> em setembro de 2025. Em fevereiro de 2026
-        faturou <strong>R$209.151</strong>.{" "}
+        Uma marca de moda feminina premium de Fortaleza entrou faturando{" "}
+        <strong>R$36.866/mês</strong>. Em 6 meses chegou a{" "}
+        <strong>R$209.151</strong>.{" "}
         <span className="font-bold" style={{ color: PURPLE }}>
-          Crescimento de 467% em 6 meses
-        </span>{" "}
-        com tráfego estratégico + CRM.
+          Crescimento de 467%.
+        </span>
       </p>
 
       <div className="bg-gray-50 rounded-2xl p-5 mb-8">
@@ -346,7 +345,7 @@ function ProvaScreen({ onNext }: { onNext: () => void }) {
         className="w-full text-white font-bold py-4 px-8 rounded-xl text-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
         style={{ backgroundColor: PURPLE }}
       >
-        Quero isso, continuar <ArrowRight className="w-5 h-5" />
+        Quero isso, continuar → <ArrowRight className="w-5 h-5" />
       </button>
     </div>
   );
@@ -364,18 +363,14 @@ function CommitmentScreen({
   return (
     <div>
       <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-3">
-        Investimento
+        Você está a um passo de ter uma máquina de vendas.
       </h2>
       <div className="bg-purple-50 border border-purple-100 rounded-2xl p-6 mb-8">
         <p className="text-gray-700 leading-relaxed">
-          Nossa gestão começa a partir de{" "}
+          Nossa gestão começa em{" "}
           <strong style={{ color: PURPLE }}>R$2.150/mês</strong> nos primeiros 3
-          meses (período de implementação e aceleração). A partir do 4º mês,{" "}
+          meses (implementação + aceleração). Do 4º mês em diante:{" "}
           <strong style={{ color: PURPLE }}>R$1.650/mês</strong>.
-        </p>
-        <p className="text-gray-800 font-semibold mt-4">
-          Está disposto a investir para escalar seu faturamento com estratégia e
-          previsibilidade?
         </p>
       </div>
       <div className="space-y-3">
@@ -418,14 +413,13 @@ function RecoveryScreen({
   return (
     <div>
       <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-3">
-        Sem problemas!
+        Sem problema. Temos uma opção menor.
       </h2>
       <div className="bg-amber-50 border border-amber-100 rounded-2xl p-6 mb-8">
         <p className="text-gray-700 leading-relaxed">
-          Entendemos. Que tal começar apenas com a{" "}
-          <strong>gestão de tráfego?</strong> A partir de{" "}
+          Comece apenas com a gestão de tráfego. A partir de{" "}
           <strong style={{ color: PURPLE }}>R$1.650/mês</strong> você já tem
-          campanhas estratégicas rodando no Meta Ads com acompanhamento semanal.
+          campanhas rodando no Meta Ads com acompanhamento semanal.
         </p>
       </div>
       <div className="space-y-3">
@@ -461,46 +455,37 @@ function RecoveryScreen({
 function ConfirmationScreen() {
   return (
     <div className="text-center py-8">
-      <div
+      <motion.div
         className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
         style={{ backgroundColor: "#F3E8FF" }}
+        initial={{ scale: 0, rotate: -180 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: "spring", stiffness: 260, damping: 20 }}
       >
-        <span className="text-4xl">🔥</span>
-      </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3, duration: 0.4 }}
+        >
+          <Check className="w-9 h-9" style={{ color: PURPLE }} strokeWidth={3} />
+        </motion.div>
+      </motion.div>
+
       <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-        Recebido!
+        Recebido! 🔥
       </h2>
       <p className="text-gray-600 text-lg leading-relaxed max-w-md mx-auto">
         Nosso time já recebeu suas informações e vai entrar em contato pelo{" "}
         <strong>WhatsApp</strong> em breve com uma análise da sua marca.
       </p>
+
       <div
-        className="mt-6 p-4 rounded-2xl border max-w-sm mx-auto"
+        className="mt-8 p-5 rounded-2xl border max-w-sm mx-auto"
         style={{ backgroundColor: "#F3E8FF", borderColor: "#DDD6FE" }}
       >
-        <p className="font-semibold text-sm" style={{ color: PURPLE }}>
-          Respondemos em até 1h útil 🚀
+        <p className="text-sm text-gray-600 leading-relaxed">
+          — Equipe Dua Criativa
         </p>
-      </div>
-
-      <div className="mt-8 max-w-sm mx-auto">
-        <p className="text-gray-500 text-sm mb-4">
-          Enquanto isso, nos siga no Instagram e veja como trabalhamos:
-        </p>
-        <a
-          href="https://instagram.com/duacriativa"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl font-bold text-white transition-opacity hover:opacity-90"
-          style={{
-            background: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)",
-          }}
-        >
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="white">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-          </svg>
-          Seguir @duacriativa
-        </a>
       </div>
     </div>
   );
@@ -590,9 +575,9 @@ export default function TrafegoForm() {
       case 3:
         return (
           <InfoScreen
-            title="Dois tipos de investimento"
-            content={`Existem 2 tipos de investimentos quando se fala em Tráfego Pago:\n\n— Verba em anúncios: pago direto à plataforma (Meta/Google)\n— Mão de obra: nossos honorários pela gestão estratégica\n\nÉ como contratar um pintor: você paga a mão de obra dele e também compra as tintas. São custos separados.`}
-            buttonText="Entendi, continuar"
+            title="Antes de continuar, é importante você entender uma coisa."
+            content={`Existem 2 tipos de investimento em Tráfego Pago:\n\n— Verba em anúncios: pago direto à plataforma (Meta/Google)\n— Mão de obra: nossos honorários pela gestão estratégica\n\nÉ como contratar um pintor: você paga a mão de obra e também compra as tintas. São custos separados.`}
+            buttonText="Entendi, continuar →"
             onNext={() => goTo(4)}
           />
         );
@@ -613,9 +598,9 @@ export default function TrafegoForm() {
       case 5:
         return (
           <InfoScreen
-            title="O que é CRM?"
-            content={`Sabe quando um cliente te chama no WhatsApp, você demora pra responder e ele já comprou da concorrência?\n\nCRM resolve isso. É um sistema que organiza todos os seus leads, manda mensagem automática na hora certa e não deixa nenhuma venda escapar.`}
-            buttonText="Faz sentido, continuar"
+            title="Você está perdendo vendas sem perceber."
+            content={`Sabe quando um cliente te chama no WhatsApp, você demora pra responder e ele já comprou da concorrência? CRM resolve isso.\n\nÉ um sistema que organiza todos os seus leads, dispara mensagem automática na hora certa e não deixa nenhuma venda escapar.`}
+            buttonText="Faz sentido, continuar →"
             onNext={() => goTo(6)}
           />
         );
