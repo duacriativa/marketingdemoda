@@ -55,13 +55,14 @@ Origem: ${origem ?? "trafegopago-form"}`;
 
     // ── CRM ────────────────────────────────────────────────────────────────
     try {
-      await fetch("https://crm.duacriativa.com.br/api/v1/leads", {
+      await fetch("https://renewed-youth-production-7d32.up.railway.app/api/v1/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...body, origem: origem ?? "trafegopago-form" }),
       });
-    } catch {
+    } catch (crmErr) {
       // CRM não bloqueia — email já foi enviado
+            console.error("CRM fetch failed:", crmErr);
     }
 
     return NextResponse.json({ ok: true });
