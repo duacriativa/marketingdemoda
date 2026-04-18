@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import type { ReactNode } from "react";
@@ -117,7 +117,7 @@ function Screen0({
   onNext,
 }: {
   form: FormState;
-  setForm: React.Dispatch<React.SetStateAction<FormState>>;
+  setForm: Dispatch<SetStateAction<FormState>>;
   onNext: () => void;
 }) {
   const [errs, setErrs] = useState({ nome: "", whatsapp: "", instagram: "" });
