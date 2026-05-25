@@ -31,20 +31,40 @@ export default function FeedPortfolio() {
     return () => clearInterval(interval);
   }, []);
 
-  /* Translate vertical wheel into horizontal scroll */
+  /* Smooth horizontal scroll with lerp — translates wheel into horizontal */
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
+
+    let target = el.scrollLeft;
+    let rafId = 0;
+
+    const tick = () => {
+      const dist = target - el.scrollLeft;
+      if (Math.abs(dist) < 0.5) {
+        el.scrollLeft = target;
+        return;
+      }
+      el.scrollLeft += dist * 0.09; // lerp factor — lower = slower/smoother
+      rafId = requestAnimationFrame(tick);
+    };
+
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
-      const atStart = el.scrollLeft === 0 && e.deltaY < 0;
-      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2 && e.deltaY > 0;
+      const atStart = target <= 0 && e.deltaY < 0;
+      const atEnd = target + el.clientWidth >= el.scrollWidth - 2 && e.deltaY > 0;
       if (atStart || atEnd) return;
       e.preventDefault();
-      el.scrollBy({ left: e.deltaY * 1.5, behavior: "auto" });
+      target = Math.max(0, Math.min(el.scrollWidth - el.clientWidth, target + e.deltaY * 0.7));
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(tick);
     };
+
     el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
