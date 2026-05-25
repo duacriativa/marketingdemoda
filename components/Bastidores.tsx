@@ -17,14 +17,11 @@ export default function Bastidores() {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <span className="text-dualime text-xs font-bold tracking-widest uppercase mb-4 block">
-            Nossa estrutura
-          </span>
           <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-6">
-            Por dentro da Dua.
+            É isso que constrói a <span className="text-dualime">Dua.</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-xl mx-auto">
-            240m² em Novo Hamburgo dedicados a uma coisa só: fazer marcas de moda venderem todos os dias.
+            Por trás de cada resultado, tem um time que escolheu não aceitar o aceitável.
           </p>
         </motion.div>
 
