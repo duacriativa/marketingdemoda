@@ -10,6 +10,12 @@ export default function Clients() {
         "/client-logo-3.png",
         "/client-logo-4.png",
         "/client-logo-5.png",
+        "/IMG_9360.PNG",
+        "/MYSLA%20vinho.png",
+        "/logo%20amofrozinha%20pink.png",
+        "/ID%20VISUAL%20NARA%20PAIVA_LOGO%20PRINCIPAL%20FUNDO%20CLARO%20RETANGULAR_SEM%20FUNDO.png",
+        "/LOGO-AMICHE---2024---PNG---BLACK.png",
+        "/NOVA%20MARCA-VERMELHA.png",
     ];
 
     return (
@@ -28,7 +34,7 @@ export default function Clients() {
                     }}
                 >
                     {[...logos, ...logos].map((logo, index) => (
-                        <div key={index} className="relative w-[120px] h-[60px] md:w-[150px] md:h-[80px] grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100 flex-shrink-0">
+                        <div key={index} className="relative w-[120px] h-[60px] md:w-[150px] md:h-[80px] brightness-0 invert opacity-50 hover:opacity-90 transition-all flex-shrink-0">
                             <Image
                                 src={logo}
                                 alt={`Client Logo ${index}`}
