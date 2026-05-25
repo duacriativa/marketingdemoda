@@ -7,10 +7,11 @@ import Services from "@/components/Services";
 import Bastidores from "@/components/Bastidores";
 import MiniCases from "@/components/MiniCases";
 import FeedPortfolio from "@/components/FeedPortfolio";
+import QuoteBanner from "@/components/QuoteBanner";
 import Methodology from "@/components/Methodology";
-import Team from "@/components/Team";
 import Feedback from "@/components/Feedback";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { Suspense } from "react";
 import LeadForm from "@/components/LeadForm";
 
@@ -25,11 +26,11 @@ export default function Home() {
       <Services />
       <Bastidores />
       <FeedPortfolio />
+      <QuoteBanner />
+      <Feedback />
       <ParaQuem />
       <Methodology />
       <MiniCases />
-      <Team />
-      <Feedback />
 
       {/* CTA Section */}
       <section id="contact" className="py-24 bg-dualime text-duabg text-center">
@@ -59,6 +60,7 @@ export default function Home() {
       </section>
 
       <Footer />
+      <WhatsAppButton />
     </main>
   );
 }
