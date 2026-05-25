@@ -4,7 +4,7 @@ import Hero from "@/components/Hero";
 import Clients from "@/components/Clients";
 import ParaQuem from "@/components/ParaQuem";
 import Services from "@/components/Services";
-import DuaLab from "@/components/DuaLab";
+import Bastidores from "@/components/Bastidores";
 import MiniCases from "@/components/MiniCases";
 import Methodology from "@/components/Methodology";
 import Team from "@/components/Team";
@@ -22,9 +22,9 @@ export default function Home() {
       <Hero />
       <Clients />
       <Services />
+      <Bastidores />
       <ParaQuem />
       <Methodology />
-      <DuaLab />
       <MiniCases />
       <Team />
       <Feedback />

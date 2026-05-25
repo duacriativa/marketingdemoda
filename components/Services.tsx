@@ -26,16 +26,6 @@ const services = [
     description: "Análise profunda da sua loja online para melhorar a conversão e a experiência do usuário."
   },
   {
-    icon: <Users className="w-8 h-8 text-dualime" />,
-    title: "Branding & Posicionamento",
-    description: "Definição da identidade visual e verbal da sua marca para se destacar no mercado de moda."
-  },
-  {
-    icon: <MessageSquare className="w-8 h-8 text-dualime" />,
-    title: "Lançamento de Coleções",
-    description: "Estratégias completas para lançamentos de alto impacto e picos de vendas."
-  },
-  {
     icon: <PenTool className="w-8 h-8 text-dualime" />,
     title: "Criação de Criativos",
     description: "Design de alta performance para anúncios e posts. Artes que chamam atenção e convertem."
