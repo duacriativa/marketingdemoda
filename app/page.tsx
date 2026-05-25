@@ -1,21 +1,19 @@
-"use client";
-
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import Clients from "@/components/Clients";
+import Services from "@/components/Services";
+import Bastidores from "@/components/Bastidores";
+import FeedPortfolio from "@/components/FeedPortfolio";
+import QuoteBanner from "@/components/QuoteBanner";
+import Feedback from "@/components/Feedback";
+import ParaQuem from "@/components/ParaQuem";
+import Methodology from "@/components/Methodology";
+import MiniCases from "@/components/MiniCases";
+import Footer from "@/components/Footer";
 import { Suspense } from "react";
 
-// Below-fold sections lazy-loaded — each becomes a separate JS chunk
-const Services     = dynamic(() => import("@/components/Services"));
-const Bastidores   = dynamic(() => import("@/components/Bastidores"));
-const FeedPortfolio = dynamic(() => import("@/components/FeedPortfolio"));
-const QuoteBanner  = dynamic(() => import("@/components/QuoteBanner"));
-const Feedback     = dynamic(() => import("@/components/Feedback"));
-const ParaQuem     = dynamic(() => import("@/components/ParaQuem"));
-const Methodology  = dynamic(() => import("@/components/Methodology"));
-const MiniCases    = dynamic(() => import("@/components/MiniCases"));
-const Footer       = dynamic(() => import("@/components/Footer"));
-const LeadForm     = dynamic(() => import("@/components/LeadForm"), { ssr: false });
+// Client-only: no SSR needed
+const LeadForm = dynamic(() => import("@/components/LeadForm"), { ssr: false });
 
 export default function Home() {
   return (
@@ -24,11 +22,8 @@ export default function Home() {
         ⚡ Apenas 2 vagas disponíveis para Junho 2026 — garanta a sua agora
       </div>
 
-      {/* Above-fold — loaded immediately */}
       <Hero />
       <Clients />
-
-      {/* Below-fold — lazy loaded */}
       <Services />
       <Bastidores />
       <FeedPortfolio />
