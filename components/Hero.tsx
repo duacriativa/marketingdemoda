@@ -50,6 +50,8 @@ export default function Hero() {
       />
       {/* Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(204,255,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(204,255,0,0.03)_1px,transparent_1px)] bg-[size:50px_50px] z-[3]" />
+      {/* Bottom fade to black for smooth section transition */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent z-[4]" />
 
       <div className="container mx-auto max-w-3xl relative z-10 text-center">
         <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
@@ -76,7 +78,7 @@ export default function Hero() {
             Especialistas em Moda · Tráfego · CRM · Social
           </motion.div>
 
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-none tracking-tighter text-white mb-8">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-none tracking-tighter text-white mb-8">
             Sua marca de moda<br />
             <span className="text-dualime">vendendo</span><br />
             todos os dias.
@@ -85,16 +87,11 @@ export default function Hero() {
           <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-medium mx-auto">
             Agência especializada em marcas de moda. Tráfego pago, social media e CRM integrados para escalar seu faturamento com previsibilidade.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+          <div className="flex items-center justify-center">
             <a href="#contact" aria-label="Quero mais informações sobre a Dua Criativa" className="flex justify-center w-full sm:w-auto">
               <button className="bg-dualime text-duabg font-black px-8 py-4 rounded-lg hover:bg-dualime/90 transition flex items-center justify-center gap-2 w-full sm:w-auto">
                 Quero mais informações
                 <ArrowRight size={20} aria-hidden="true" />
-              </button>
-            </a>
-            <a href="#cases" aria-label="Conhecer a agência Dua Criativa" className="flex justify-center w-full sm:w-auto">
-              <button className="bg-white/10 text-white font-bold px-8 py-4 rounded-lg hover:bg-white/20 transition w-full sm:w-auto">
-                Conhecer Agência
               </button>
             </a>
           </div>

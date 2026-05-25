@@ -13,16 +13,10 @@ export default function Clients() {
     ];
 
     return (
-        <section className="w-full bg-black py-10 border-b border-zinc-900 overflow-hidden">
-            <div className="container mx-auto px-4 text-center mb-8">
-                <h2 className="text-[#ccff00] text-sm md:text-base font-bold tracking-widest uppercase">
-                    + DE 100 MARCAS CRESCENDO JUNTO COM A DUA
-                </h2>
-            </div>
-
+        <section className="w-full bg-black py-12 overflow-hidden">
             <div className="relative w-full overflow-hidden">
-                <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-black to-transparent z-10" />
-                <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-black to-transparent z-10" />
+                <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10" />
+                <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10" />
 
                 <motion.div
                     className="flex items-center gap-12 md:gap-20 w-max"
