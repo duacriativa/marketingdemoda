@@ -31,33 +31,49 @@ export default function FeedPortfolio() {
     return () => clearInterval(interval);
   }, []);
 
-  /* Smooth horizontal scroll with lerp — translates wheel into horizontal */
+  /* Physics-based horizontal scroll: accumulates velocity + friction */
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
 
-    let target = el.scrollLeft;
+    let velocity = 0;
     let rafId = 0;
+    let ticking = false;
 
-    const tick = () => {
-      const dist = target - el.scrollLeft;
-      if (Math.abs(dist) < 0.5) {
-        el.scrollLeft = target;
-        return;
+    const friction = 0.88; // 0 = instant stop, 1 = never stops
+
+    const animate = () => {
+      velocity *= friction;
+      el.scrollLeft += velocity;
+
+      if (Math.abs(velocity) > 0.3) {
+        rafId = requestAnimationFrame(animate);
+      } else {
+        ticking = false;
       }
-      el.scrollLeft += dist * 0.09; // lerp factor — lower = slower/smoother
-      rafId = requestAnimationFrame(tick);
     };
 
     const onWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
-      const atStart = target <= 0 && e.deltaY < 0;
-      const atEnd = target + el.clientWidth >= el.scrollWidth - 2 && e.deltaY > 0;
+      // Let pure horizontal trackpad swipes pass through
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const atStart = el.scrollLeft <= 0 && e.deltaY < 0;
+      const atEnd = el.scrollLeft >= maxScroll - 1 && e.deltaY > 0;
+
+      // At boundaries, let page scroll normally
       if (atStart || atEnd) return;
+
       e.preventDefault();
-      target = Math.max(0, Math.min(el.scrollWidth - el.clientWidth, target + e.deltaY * 0.7));
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(tick);
+
+      // Accumulate velocity (slower = lower multiplier)
+      velocity += e.deltaY * 0.4;
+
+      if (!ticking) {
+        ticking = true;
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(animate);
+      }
     };
 
     el.addEventListener("wheel", onWheel, { passive: false });
@@ -98,17 +114,17 @@ export default function FeedPortfolio() {
         </h2>
       </motion.div>
 
-      {/* Horizontal scroll carousel */}
+      {/* Horizontal scroll carousel — no scroll-snap so physics feel natural */}
       <div
         ref={scrollRef}
-        className="flex gap-5 overflow-x-auto scrollbar-hide pl-6 pr-6 pb-4"
-        style={{ scrollSnapType: "x mandatory" }}
+        className="flex gap-5 overflow-x-auto scrollbar-hide pl-6 pb-4"
+        style={{ overscrollBehaviorX: "none" }}
       >
         {clients.map((client, i) => (
           <div
             key={i}
             className="flex-shrink-0 group"
-            style={{ scrollSnapAlign: "start", width: "clamp(300px, 30vw, 430px)" }}
+            style={{ width: "clamp(300px, 30vw, 430px)" }}
           >
             {/* Image */}
             <div
@@ -143,7 +159,7 @@ export default function FeedPortfolio() {
         ))}
 
         {/* Trailing spacer */}
-        <div className="flex-shrink-0 w-2" />
+        <div className="flex-shrink-0 w-6" />
       </div>
 
     </section>
