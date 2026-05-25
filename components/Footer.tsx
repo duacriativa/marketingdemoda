@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Instagram, Linkedin, MessageCircle } from "lucide-react";
 import { Unbounded } from "next/font/google";
 
-const unbounded = Unbounded({ subsets: ["latin"], weight: ["700"] });
+const unbounded = Unbounded({ subsets: ["latin"], weight: ["700"], display: "swap" });
 
 const Footer = () => {
     return (

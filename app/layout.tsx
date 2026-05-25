@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google"; // Changed from Geist to Montserrat
+import { Montserrat } from "next/font/google";
 import Script from "next/script";
+import dynamic from "next/dynamic";
 import FacebookPixel from "@/components/FacebookPixel";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import "./globals.css";
+
+const WhatsAppButton = dynamic(() => import("@/components/WhatsAppButton"), { ssr: false });
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
   weight: ["400", "600", "700", "900"],
+  display: "swap",
 });
 export const metadata: Metadata = {
   title: "Dua Criativa - Agência de Marketing para Moda",

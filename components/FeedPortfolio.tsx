@@ -106,7 +106,9 @@ export default function FeedPortfolio() {
                   src={client.image}
                   alt={client.name}
                   fill
-                  sizes="400px"
+                  sizes="(max-width: 768px) 300px, 400px"
+                  quality={70}
+                  loading="lazy"
                   className="object-cover object-top group-hover:scale-[1.04] transition-transform duration-500"
                 />
               </div>

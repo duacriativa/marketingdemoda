@@ -72,7 +72,9 @@ export default function Bastidores() {
                     src={photo.src}
                     alt={photo.alt}
                     fill
-                    sizes="320px"
+                    sizes="(max-width: 768px) 220px, 320px"
+                    quality={72}
+                    loading="lazy"
                     className="object-cover object-center group-hover:scale-[1.04] transition-transform duration-500"
                   />
                 </div>

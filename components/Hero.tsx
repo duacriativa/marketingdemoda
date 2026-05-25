@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Unbounded } from "next/font/google";
 
-const unbounded = Unbounded({ subsets: ["latin"], weight: ["700"] });
+const unbounded = Unbounded({ subsets: ["latin"], weight: ["700"], display: "swap" });
 
 export default function Hero() {
   return (

@@ -1,19 +1,21 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import Clients from "@/components/Clients";
-import ParaQuem from "@/components/ParaQuem";
-import Services from "@/components/Services";
-import Bastidores from "@/components/Bastidores";
-import MiniCases from "@/components/MiniCases";
-import FeedPortfolio from "@/components/FeedPortfolio";
-import QuoteBanner from "@/components/QuoteBanner";
-import Methodology from "@/components/Methodology";
-import Feedback from "@/components/Feedback";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { Suspense } from "react";
-import LeadForm from "@/components/LeadForm";
+
+// Below-fold sections lazy-loaded — each becomes a separate JS chunk
+const Services     = dynamic(() => import("@/components/Services"));
+const Bastidores   = dynamic(() => import("@/components/Bastidores"));
+const FeedPortfolio = dynamic(() => import("@/components/FeedPortfolio"));
+const QuoteBanner  = dynamic(() => import("@/components/QuoteBanner"));
+const Feedback     = dynamic(() => import("@/components/Feedback"));
+const ParaQuem     = dynamic(() => import("@/components/ParaQuem"));
+const Methodology  = dynamic(() => import("@/components/Methodology"));
+const MiniCases    = dynamic(() => import("@/components/MiniCases"));
+const Footer       = dynamic(() => import("@/components/Footer"));
+const LeadForm     = dynamic(() => import("@/components/LeadForm"), { ssr: false });
 
 export default function Home() {
   return (
@@ -21,8 +23,12 @@ export default function Home() {
       <div className="bg-dualime text-black text-center py-3 px-4 text-sm font-bold tracking-wide relative z-50">
         ⚡ Apenas 2 vagas disponíveis para Junho 2026 — garanta a sua agora
       </div>
+
+      {/* Above-fold — loaded immediately */}
       <Hero />
       <Clients />
+
+      {/* Below-fold — lazy loaded */}
       <Services />
       <Bastidores />
       <FeedPortfolio />
@@ -46,13 +52,7 @@ export default function Home() {
             <p className="text-gray-400 text-sm mb-8">
               Preencha os dados e vamos te chamar no WhatsApp em até 10 minutos.
             </p>
-            <Suspense
-              fallback={
-                <div className="h-40 flex items-center justify-center animate-pulse text-dualime">
-                  Carregando...
-                </div>
-              }
-            >
+            <Suspense fallback={<div className="h-40 flex items-center justify-center animate-pulse text-dualime">Carregando...</div>}>
               <LeadForm clientSlug="dua-criativa" />
             </Suspense>
           </div>
@@ -60,7 +60,6 @@ export default function Home() {
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </main>
   );
 }
