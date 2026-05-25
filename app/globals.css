@@ -32,6 +32,12 @@ html {
   color: var(--color-duabg);
 }
 
+/* Feed portfolio marquee animation */
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 /* Hide scrollbar for horizontal galleries */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
