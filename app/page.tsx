@@ -21,9 +21,9 @@ export default function Home() {
       </div>
       <Hero />
       <Clients />
+      <Services />
       <ParaQuem />
       <Methodology />
-      <Services />
       <DuaLab />
       <MiniCases />
       <Team />
