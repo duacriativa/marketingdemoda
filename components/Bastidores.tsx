@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const photos = Array.from({ length: 14 }, (_, i) => `/bastidor%20${i + 1}.jpg`);
+const photos = Array.from({ length: 14 }, (_, i) => `/bastidor${i + 1}.jpg`);
 
 export default function Bastidores() {
   return (
