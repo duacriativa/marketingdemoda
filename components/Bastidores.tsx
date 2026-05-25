@@ -4,20 +4,20 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 const photos = [
-  "/bastidores/foto-01.jpg",
-  "/bastidores/foto-02.jpg",
-  "/bastidores/foto-03.jpg",
-  "/bastidores/foto-04.jpg",
-  "/bastidores/foto-05.jpg",
-  "/bastidores/foto-06.jpg",
-  "/bastidores/foto-07.jpg",
-  "/bastidores/foto-08.jpg",
-  "/bastidores/foto-09.jpg",
-  "/bastidores/foto-10.jpg",
-  "/bastidores/foto-11.jpg",
-  "/bastidores/foto-12.jpg",
-  "/bastidores/foto-13.jpg",
-  "/bastidores/foto-14.jpg",
+  "/bastidor-01.jpg",
+  "/bastidor-02.jpg",
+  "/bastidor-03.jpg",
+  "/bastidor-04.jpg",
+  "/bastidor-05.jpg",
+  "/bastidor-06.jpg",
+  "/bastidor-07.jpg",
+  "/bastidor-08.jpg",
+  "/bastidor-09.jpg",
+  "/bastidor-10.jpg",
+  "/bastidor-11.jpg",
+  "/bastidor-12.jpg",
+  "/bastidor-13.jpg",
+  "/bastidor-14.jpg",
 ];
 
 export default function Bastidores() {
