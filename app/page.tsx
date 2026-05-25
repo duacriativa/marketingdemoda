@@ -42,9 +42,9 @@ export default function Home() {
             Não deixe dinheiro na mesa. Agende uma reunião estratégica gratuita com nosso time.
           </p>
           <div className="max-w-xl mx-auto bg-black text-white p-10 rounded-3xl shadow-2xl text-left">
-            <h3 className="text-2xl font-black mb-2">Agendar reunião estratégica gratuita</h3>
+            <h3 className="text-2xl font-black mb-2">Saiba como a Dua pode ajudar a sua marca de moda!</h3>
             <p className="text-gray-400 text-sm mb-8">
-              Preencha os dados e vamos te chamar no WhatsApp em até 1h.
+              Preencha os dados e vamos te chamar no WhatsApp em até 10 minutos.
             </p>
             <Suspense
               fallback={

@@ -112,7 +112,7 @@ export default function LeadForm({ clientSlug }: { clientSlug: string }) {
         </h4>
         <p className="text-gray-400 text-sm">
           {isDuaCriativa
-            ? "Nosso time vai confirmar em até 1h."
+            ? "Nosso time vai confirmar em até 10 minutos."
             : "Entraremos em contato em breve."}
         </p>
       </div>
@@ -242,8 +242,8 @@ export default function LeadForm({ clientSlug }: { clientSlug: string }) {
         {loading
           ? "Enviando..."
           : isDuaCriativa
-          ? "Quero minha reunião gratuita →"
-          : "Solicitar Orçamento →"}
+          ? "Solicitar orçamento →"
+          : "Solicitar orçamento →"}
       </button>
 
       <p className="text-gray-600 text-xs text-center">

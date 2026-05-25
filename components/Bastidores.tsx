@@ -36,7 +36,7 @@ export default function Bastidores() {
           className="text-center px-6 mb-14"
         >
           <h2 className="text-4xl md:text-6xl font-black text-black tracking-tighter mb-4">
-            É isso que constrói a <span className="text-dualime">Dua.</span>
+            É isso que constrói a <span style={{ color: "#7B2060" }}>Dua.</span>
           </h2>
           <p className="text-gray-500 text-lg max-w-xl mx-auto">
             Por trás de cada resultado, tem um time que escolheu não aceitar o aceitável.

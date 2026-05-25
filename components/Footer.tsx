@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { Instagram, Linkedin, MessageCircle } from "lucide-react";
+import { Unbounded } from "next/font/google";
+
+const unbounded = Unbounded({ subsets: ["latin"], weight: ["700"] });
 
 const Footer = () => {
     return (
@@ -7,8 +10,9 @@ const Footer = () => {
             <div className="container mx-auto px-6">
                 <div className="grid md:grid-cols-4 gap-12 mb-16">
                     <div className="col-span-1 md:col-span-2">
-                        <Link href="/" className="text-3xl font-bold text-white mb-6 block">
-                            DUA<span className="text-dualime">.</span>
+                        <Link href="/" className={`flex items-end gap-1 mb-6 w-fit ${unbounded.className}`}>
+                            <span className="text-2xl font-bold text-white leading-none">dua</span>
+                            <span className="w-2 h-2 rounded-full bg-dualime mb-0.5 shrink-0" aria-hidden="true" />
                         </Link>
                         <p className="text-gray-400 max-w-sm mb-6">
                             A agência de marketing de moda que respira estratégia e resultados.

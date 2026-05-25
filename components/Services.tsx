@@ -27,8 +27,8 @@ const services = [
   },
   {
     icon: <PenTool className="w-8 h-8 text-dualime" />,
-    title: "Criação de Criativos",
-    description: "Design de alta performance para anúncios e posts. Artes que chamam atenção e convertem."
+    title: "Páginas de vendas",
+    description: "Qualificamos seu cliente de atacado junto com automações com método exclusivo."
   },
   {
     icon: <Clapperboard className="w-8 h-8 text-dualime" />,

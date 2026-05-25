@@ -24,7 +24,7 @@ const Methodology = () => {
                         <Heart className="w-12 h-12 text-purple-400 mb-6" />
                         <h3 className="text-2xl font-bold text-white mb-4">Posicionamento & Desejo</h3>
                         <p className="text-gray-300 leading-relaxed mb-6">
-                            Construímos a alma da sua marca. Trabalhamos a estética, o tom de voz e o branding para que sua loja não seja apenas mais uma, mas sim a *escolha óbvia* do cliente.
+                            Construímos a alma da sua marca. Trabalhamos a estética, o tom de voz e o branding para que sua loja não seja apenas mais uma, mas sim a <strong className="text-white font-bold">escolha óbvia</strong> do cliente.
                         </p>
                         <ul className="space-y-2 text-sm text-gray-400">
                             <li className="flex items-center gap-2">✓ Identidade Visual Premium</li>
