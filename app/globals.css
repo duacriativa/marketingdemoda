@@ -31,3 +31,12 @@ html {
   background-color: var(--color-dualime);
   color: var(--color-duabg);
 }
+
+/* Hide scrollbar for horizontal galleries */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

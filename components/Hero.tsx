@@ -67,6 +67,17 @@ export default function Hero() {
             <span className="w-2.5 h-2.5 rounded-full bg-dualime mb-1 shrink-0" aria-hidden="true" />
           </motion.div>
 
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="inline-flex items-center gap-2 bg-dualime/10 border border-dualime/30 text-dualime text-xs font-bold px-4 py-2 rounded-full mb-6"
+          >
+            <span className="w-2 h-2 bg-dualime rounded-full animate-pulse" aria-hidden="true" />
+            Especialistas em Moda · Tráfego · CRM · Social
+          </motion.div>
+
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-none tracking-tighter text-white mb-5">
             Moda que <span className="text-dualime">vende.</span><br />
             Todo dia.<br />
