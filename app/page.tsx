@@ -24,10 +24,10 @@ export default function Home() {
       <Clients />
       <Services />
       <Bastidores />
+      <FeedPortfolio />
       <ParaQuem />
       <Methodology />
       <MiniCases />
-      <FeedPortfolio />
       <Team />
       <Feedback />
 
