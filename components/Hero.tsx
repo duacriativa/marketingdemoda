@@ -8,7 +8,7 @@ const unbounded = Unbounded({ subsets: ["latin"], weight: ["700"] });
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center bg-duabg overflow-hidden px-6 pt-16">
+    <section className="relative min-h-[calc(100vh-220px)] flex flex-col justify-center bg-duabg overflow-hidden px-6 pt-6">
       {/* Background fashion photo */}
       <Image
         src="/Prancheta%201%20copiar%209.jpg"
@@ -61,30 +61,19 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
-            className={`flex items-end justify-center gap-1 mb-8 ${unbounded.className}`}
+            className={`flex items-end justify-center gap-1 mb-4 ${unbounded.className}`}
           >
             <span className="text-3xl font-bold text-white leading-none">dua</span>
             <span className="w-2.5 h-2.5 rounded-full bg-dualime mb-1 shrink-0" aria-hidden="true" />
           </motion.div>
 
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 bg-dualime/10 border border-dualime/30 text-dualime text-xs font-bold px-4 py-2 rounded-full mb-10"
-          >
-            <span className="w-2 h-2 bg-dualime rounded-full animate-pulse" aria-hidden="true" />
-            Especialistas em Moda · Tráfego · CRM · Social
-          </motion.div>
-
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-none tracking-tighter text-white mb-8">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-none tracking-tighter text-white mb-5">
             Moda que <span className="text-dualime">vende.</span><br />
             Todo dia.<br />
             Sem improviso.
           </h1>
 
-          <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-medium mx-auto">
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mb-7 font-medium mx-auto">
             Agência especializada em marcas de moda. Tráfego pago, social media e CRM integrados para escalar seu faturamento com previsibilidade.
           </p>
           <div className="flex items-center justify-center">
