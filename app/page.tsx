@@ -6,6 +6,7 @@ import ParaQuem from "@/components/ParaQuem";
 import Services from "@/components/Services";
 import Bastidores from "@/components/Bastidores";
 import MiniCases from "@/components/MiniCases";
+import FeedPortfolio from "@/components/FeedPortfolio";
 import Methodology from "@/components/Methodology";
 import Team from "@/components/Team";
 import Feedback from "@/components/Feedback";
@@ -26,6 +27,7 @@ export default function Home() {
       <ParaQuem />
       <Methodology />
       <MiniCases />
+      <FeedPortfolio />
       <Team />
       <Feedback />
 
