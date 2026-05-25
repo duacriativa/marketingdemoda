@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import Script from "next/script";
-import dynamic from "next/dynamic";
 import FacebookPixel from "@/components/FacebookPixel";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import "./globals.css";
-
-const WhatsAppButton = dynamic(() => import("@/components/WhatsAppButton"), { ssr: false });
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",

@@ -10,10 +10,8 @@ import ParaQuem from "@/components/ParaQuem";
 import Methodology from "@/components/Methodology";
 import MiniCases from "@/components/MiniCases";
 import Footer from "@/components/Footer";
+import LeadForm from "@/components/LeadForm";
 import { Suspense } from "react";
-
-// Client-only: no SSR needed
-const LeadForm = dynamic(() => import("@/components/LeadForm"), { ssr: false });
 
 export default function Home() {
   return (
