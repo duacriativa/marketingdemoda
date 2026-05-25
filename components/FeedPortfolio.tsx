@@ -6,9 +6,18 @@ import { useState, useEffect } from "react";
 
 const WORDS = ["posicionada.", "atrativa.", "alto nível.", "atualizada."];
 
-// Atualizar com os nomes reais das marcas e arquivos quando as imagens forem enviadas
-const clients: { name: string; image: string; tags: string[] }[] = [
-  // { name: "Amiche", image: "/feed_amiche.png", tags: ["Conteúdo", "Design"] },
+const clients = [
+  { name: "Amiche",     image: "/feed_amiche.jpg",     tags: ["Conteúdo", "Design"] },
+  { name: "Aya",        image: "/feed_aya.jpeg",        tags: ["Conteúdo", "Design"] },
+  { name: "Del Carmen", image: "/feed_delcarmen.jpeg",  tags: ["Conteúdo", "Design"] },
+  { name: "Doce Caju",  image: "/feed_docecaju.jpeg",   tags: ["Conteúdo", "Design"] },
+  { name: "Flora",      image: "/feed_flora.jpeg",      tags: ["Conteúdo", "Design"] },
+  { name: "Jenni Pink", image: "/feed_jennipink.jpeg",  tags: ["Conteúdo", "Design"] },
+  { name: "Kyrefh",     image: "/feed_kyrefh.jpeg",     tags: ["Conteúdo", "Design"] },
+  { name: "Mandi",      image: "/feed_mandi.jpeg",      tags: ["Conteúdo", "Design"] },
+  { name: "Mysla",      image: "/feed_mysla.jpeg",      tags: ["Conteúdo", "Design"] },
+  { name: "Naromo",     image: "/feed_naromo.jpeg",     tags: ["Conteúdo", "Design"] },
+  { name: "Umi",        image: "/feed_umi.jpeg",        tags: ["Conteúdo", "Design"] },
 ];
 
 export default function FeedPortfolio() {
