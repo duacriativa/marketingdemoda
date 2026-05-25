@@ -79,9 +79,9 @@ export default function Hero() {
           </motion.div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-none tracking-tighter text-white mb-8">
-            Sua marca de moda<br />
-            <span className="text-dualime">vendendo</span><br />
-            todos os dias.
+            Moda que <span className="text-dualime">vende.</span><br />
+            Todo dia.<br />
+            Sem improviso.
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-medium mx-auto">
