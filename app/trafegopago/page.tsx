@@ -356,9 +356,11 @@ function ProvaScreen({ onNext }: { onNext: () => void }) {
 function CommitmentScreen({
   onCombo,
   onObjection,
+  submitting,
 }: {
   onCombo: () => void;
   onObjection: () => void;
+  submitting: boolean;
 }) {
   return (
     <div>
@@ -376,18 +378,20 @@ function CommitmentScreen({
       <div className="space-y-3">
         <button
           onClick={onCombo}
-          className="w-full text-left px-5 py-4 rounded-xl border-2 border-gray-200 bg-white flex items-center gap-4 transition-all hover:border-purple-400 hover:bg-purple-50 group"
+          disabled={submitting}
+          className="w-full text-left px-5 py-4 rounded-xl border-2 border-gray-200 bg-white flex items-center gap-4 transition-all hover:border-purple-400 hover:bg-purple-50 group disabled:opacity-60 disabled:cursor-not-allowed"
         >
           <span className="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center text-sm font-bold bg-gray-100 text-gray-600 group-hover:bg-purple-100 group-hover:text-purple-600 transition-colors">
             A
           </span>
           <span className="text-base font-medium text-gray-700">
-            Sim, quero escalar minha marca 🚀
+            {submitting ? "Enviando..." : "Sim, quero escalar minha marca 🚀"}
           </span>
         </button>
         <button
           onClick={onObjection}
-          className="w-full text-left px-5 py-4 rounded-xl border-2 border-gray-200 bg-white flex items-center gap-4 transition-all hover:border-gray-300 group"
+          disabled={submitting}
+          className="w-full text-left px-5 py-4 rounded-xl border-2 border-gray-200 bg-white flex items-center gap-4 transition-all hover:border-gray-300 group disabled:opacity-60 disabled:cursor-not-allowed"
         >
           <span className="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center text-sm font-bold bg-gray-100 text-gray-600 transition-colors">
             B
@@ -406,9 +410,11 @@ function CommitmentScreen({
 function RecoveryScreen({
   onTrafego,
   onFrio,
+  submitting,
 }: {
   onTrafego: () => void;
   onFrio: () => void;
+  submitting: boolean;
 }) {
   return (
     <div>
@@ -425,18 +431,20 @@ function RecoveryScreen({
       <div className="space-y-3">
         <button
           onClick={onTrafego}
-          className="w-full text-left px-5 py-4 rounded-xl border-2 border-gray-200 bg-white flex items-center gap-4 transition-all hover:border-purple-400 hover:bg-purple-50 group"
+          disabled={submitting}
+          className="w-full text-left px-5 py-4 rounded-xl border-2 border-gray-200 bg-white flex items-center gap-4 transition-all hover:border-purple-400 hover:bg-purple-50 group disabled:opacity-60 disabled:cursor-not-allowed"
         >
           <span className="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center text-sm font-bold bg-gray-100 text-gray-600 group-hover:bg-purple-100 group-hover:text-purple-600 transition-colors">
             A
           </span>
           <span className="text-base font-medium text-gray-700">
-            Tenho interesse no tráfego 📈
+            {submitting ? "Enviando..." : "Tenho interesse no tráfego 📈"}
           </span>
         </button>
         <button
           onClick={onFrio}
-          className="w-full text-left px-5 py-4 rounded-xl border-2 border-gray-200 bg-white flex items-center gap-4 transition-all hover:border-gray-300 group"
+          disabled={submitting}
+          className="w-full text-left px-5 py-4 rounded-xl border-2 border-gray-200 bg-white flex items-center gap-4 transition-all hover:border-gray-300 group disabled:opacity-60 disabled:cursor-not-allowed"
         >
           <span className="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center text-sm font-bold bg-gray-100 text-gray-600 transition-colors">
             B
@@ -496,6 +504,7 @@ function ConfirmationScreen() {
 export default function TrafegoForm() {
   const [screen, setScreen] = useState(0);
   const [dir, setDir] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState<FormState>({
     nome: "",
     whatsapp: "",
@@ -513,6 +522,8 @@ export default function TrafegoForm() {
   }
 
   async function submitAndFinish(interesse: FormState["interesse"]) {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     const payload = {
       nome: form.nome,
       whatsapp: form.whatsapp,
@@ -613,6 +624,7 @@ export default function TrafegoForm() {
           <CommitmentScreen
             onCombo={() => submitAndFinish("combo")}
             onObjection={() => goTo(8)}
+            submitting={isSubmitting}
           />
         );
 
@@ -621,6 +633,7 @@ export default function TrafegoForm() {
           <RecoveryScreen
             onTrafego={() => submitAndFinish("trafego")}
             onFrio={() => submitAndFinish("frio")}
+            submitting={isSubmitting}
           />
         );
 
