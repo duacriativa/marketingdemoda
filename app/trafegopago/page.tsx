@@ -367,10 +367,10 @@ function CommitmentScreen({
       </h2>
       <div className="bg-purple-50 border border-purple-100 rounded-2xl p-6 mb-8">
         <p className="text-gray-700 leading-relaxed">
-          Nossa gestão começa em{" "}
-          <strong style={{ color: PURPLE }}>R$2.150/mês</strong> nos primeiros 3
-          meses (implementação + aceleração). Do 4º mês em diante:{" "}
-          <strong style={{ color: PURPLE }}>R$1.650/mês</strong>.
+          Cuidamos da sua operação de tráfego pago com estratégia, otimização e
+          acompanhamento focados em vendas além de acesso ao nosso sistema
+          exclusivo que te dá visão clara dos produtos, ações e resultados.{" "}
+          <strong style={{ color: PURPLE }}>Gestão de Performance: R$ 1.800/mês</strong>.
         </p>
       </div>
       <div className="space-y-3">
@@ -417,9 +417,9 @@ function RecoveryScreen({
       </h2>
       <div className="bg-amber-50 border border-amber-100 rounded-2xl p-6 mb-8">
         <p className="text-gray-700 leading-relaxed">
-          Comece apenas com a gestão de tráfego. A partir de{" "}
-          <strong style={{ color: PURPLE }}>R$1.650/mês</strong> você já tem
-          campanhas rodando no Meta Ads com acompanhamento semanal.
+          Entendemos. Que tal começar com o nosso{" "}
+          <strong style={{ color: PURPLE }}>Plano Tráfego Essencial: R$ 997/mês</strong>?{" "}
+          Somente Meta Ads, operação mais enxuta e acompanhamento semanal.
         </p>
       </div>
       <div className="space-y-3">
