@@ -124,7 +124,7 @@ export default function LeadForm({ clientSlug }: { clientSlug: string }) {
       {/* Nome */}
       <div>
         <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide">
-          Nome completo *
+          Nome e Sobrenome *
         </label>
         <input
           type="text"
