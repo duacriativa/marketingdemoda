@@ -2,7 +2,7 @@
 
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import type { ReactNode } from "react";
 import { Unbounded } from "next/font/google";
 
@@ -16,6 +16,9 @@ interface FormState {
   instagram: string;
   investimento_atual: string;
   faturamento: string;
+  loja_virtual: string;
+  faturamento_loja: string;
+  quer_loja_virtual: string;
   atendimento_leads: string;
   interesse: "combo" | "trafego" | "frio" | "";
 }
@@ -23,13 +26,14 @@ interface FormState {
 // ── Constants ──────────────────────────────────────────────────────────────
 
 const PURPLE = "#7C3AED";
-const TOTAL_STEPS = 8;
-const LABELS = ["A", "B", "C", "D", "E"];
+const TOTAL_STEPS = 10;
+const LABELS = ["A", "B", "C", "D", "E", "F"];
 
 const INVESTIMENTO_OPTS = [
   "Ainda não invisto em tráfego pago",
   "R$500 a R$1.000/mês",
-  "R$1.000 a R$5.000/mês",
+  "R$1.000 a R$2.500/mês",
+  "R$2.500 a R$5.000/mês",
   "R$5.000 a R$10.000/mês",
   "Acima de R$10.000/mês",
 ];
@@ -40,6 +44,14 @@ const FATURAMENTO_OPTS = [
   "R$30 mil a R$50 mil/mês",
   "R$50 mil a R$100 mil/mês",
   "Acima de R$100 mil/mês",
+];
+
+const FATURAMENTO_LOJA_OPTS = [
+  "Não vendo nada ainda",
+  "No máximo R$5.000/mês",
+  "No máximo R$10.000/mês",
+  "No máximo R$25.000/mês",
+  "Acima de R$50.000/mês",
 ];
 
 const ATENDIMENTO_OPTS = [
@@ -66,6 +78,13 @@ function maskPhone(value: string): string {
   if (d.length <= 2) return `(${d}`;
   if (d.length <= 7) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+
+// screens 4 and 5 are mutually exclusive, both map to step 5
+function getProgressStep(s: number): number {
+  if (s <= 4) return s + 1;
+  if (s === 5) return 5;
+  return Math.min(s, TOTAL_STEPS);
 }
 
 // ── Animation variants ─────────────────────────────────────────────────────
@@ -197,7 +216,7 @@ function Screen0({
   );
 }
 
-// ── Question screen (auto-advance) ─────────────────────────────────────────
+// ── Question screen (auto-advance on select) ───────────────────────────────
 
 function QuestionScreen({
   question,
@@ -244,6 +263,46 @@ function QuestionScreen({
             </span>
           </button>
         ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Yes/No screen ──────────────────────────────────────────────────────────
+
+function YesNoScreen({
+  question,
+  onSim,
+  onNao,
+}: {
+  question: string;
+  onSim: () => void;
+  onNao: () => void;
+}) {
+  return (
+    <div>
+      <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-8">
+        {question}
+      </h2>
+      <div className="space-y-3">
+        <button
+          onClick={onSim}
+          className="w-full text-left px-5 py-4 rounded-xl border-2 border-gray-200 bg-white flex items-center gap-4 transition-all hover:border-purple-400 hover:bg-purple-50 group"
+        >
+          <span className="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center text-sm font-bold bg-gray-100 text-gray-600 group-hover:bg-purple-100 group-hover:text-purple-600 transition-colors">
+            A
+          </span>
+          <span className="text-base font-medium text-gray-700">Sim</span>
+        </button>
+        <button
+          onClick={onNao}
+          className="w-full text-left px-5 py-4 rounded-xl border-2 border-gray-200 bg-white flex items-center gap-4 transition-all hover:border-gray-300 group"
+        >
+          <span className="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center text-sm font-bold bg-gray-100 text-gray-600 transition-colors">
+            B
+          </span>
+          <span className="text-base font-medium text-gray-700">Não</span>
+        </button>
       </div>
     </div>
   );
@@ -351,7 +410,7 @@ function ProvaScreen({ onNext }: { onNext: () => void }) {
   );
 }
 
-// ── Screen 8: Comprometimento ──────────────────────────────────────────────
+// ── Screen 10: Comprometimento ─────────────────────────────────────────────
 
 function CommitmentScreen({
   onCombo,
@@ -371,6 +430,10 @@ function CommitmentScreen({
           acompanhamento focados em vendas além de acesso ao nosso sistema
           exclusivo que te dá visão clara dos produtos, ações e resultados.{" "}
           <strong style={{ color: PURPLE }}>Gestão de Performance: R$ 1.800/mês</strong>.
+        </p>
+        <p className="text-gray-800 font-semibold mt-4">
+          Está disposto a investir para escalar seu faturamento com estratégia e
+          previsibilidade?
         </p>
       </div>
       <div className="space-y-3">
@@ -401,7 +464,7 @@ function CommitmentScreen({
   );
 }
 
-// ── Screen 9: Recuperação ──────────────────────────────────────────────────
+// ── Screen 11: Recuperação ─────────────────────────────────────────────────
 
 function RecoveryScreen({
   onTrafego,
@@ -450,7 +513,7 @@ function RecoveryScreen({
   );
 }
 
-// ── Screen 10: Confirmação ─────────────────────────────────────────────────
+// ── Screen 12: Confirmação ─────────────────────────────────────────────────
 
 function ConfirmationScreen() {
   return (
@@ -487,6 +550,16 @@ function ConfirmationScreen() {
           — Equipe Dua Criativa
         </p>
       </div>
+
+      <a
+        href="https://www.instagram.com/duacriativa"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-full text-white font-semibold text-sm transition-opacity hover:opacity-90"
+        style={{ background: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)" }}
+      >
+        Seguir @duacriativa no Instagram
+      </a>
     </div>
   );
 }
@@ -496,19 +569,33 @@ function ConfirmationScreen() {
 export default function TrafegoForm() {
   const [screen, setScreen] = useState(0);
   const [dir, setDir] = useState(1);
+  const [history, setHistory] = useState<number[]>([]);
   const [form, setForm] = useState<FormState>({
     nome: "",
     whatsapp: "",
     instagram: "",
     investimento_atual: "",
     faturamento: "",
+    loja_virtual: "",
+    faturamento_loja: "",
+    quer_loja_virtual: "",
     atendimento_leads: "",
     interesse: "",
   });
 
   function goTo(next: number) {
+    setHistory((h) => [...h, screen]);
     setDir(next > screen ? 1 : -1);
     setScreen(next);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function goBack() {
+    if (history.length === 0) return;
+    const prev = history[history.length - 1];
+    setHistory((h) => h.slice(0, -1));
+    setDir(-1);
+    setScreen(prev);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -519,6 +606,9 @@ export default function TrafegoForm() {
       instagram: form.instagram,
       investimento_atual: form.investimento_atual,
       faturamento: form.faturamento,
+      loja_virtual: form.loja_virtual,
+      faturamento_loja: form.faturamento_loja || "-",
+      quer_loja_virtual: form.quer_loja_virtual || "-",
       atendimento_leads: form.atendimento_leads,
       interesse,
       origem: "trafegopago-form",
@@ -533,13 +623,12 @@ export default function TrafegoForm() {
       // proceed regardless of network issues
     }
     setForm((f) => ({ ...f, interesse }));
-    goTo(9);
+    goTo(12);
   }
 
-  // Screens 0-7 map to progress steps 1-8. Screens 8+ keep step at 8.
-  const progressStep = screen < 8 ? screen + 1 : TOTAL_STEPS;
-  const progressPct =
-    screen >= 9 ? 100 : (progressStep / TOTAL_STEPS) * 100;
+  const progressStep = getProgressStep(screen);
+  const progressPct = screen >= 12 ? 100 : (progressStep / TOTAL_STEPS) * 100;
+  const canGoBack = screen > 0 && screen < 12 && history.length > 0;
 
   function renderScreen(): ReactNode {
     switch (screen) {
@@ -574,15 +663,58 @@ export default function TrafegoForm() {
 
       case 3:
         return (
-          <InfoScreen
-            title="Antes de continuar, é importante você entender uma coisa."
-            content={`Existem 2 tipos de investimento em Tráfego Pago:\n\n— Verba em anúncios: pago direto à plataforma (Meta/Google)\n— Mão de obra: nossos honorários pela gestão estratégica\n\nÉ como contratar um pintor: você paga a mão de obra e também compra as tintas. São custos separados.`}
-            buttonText="Entendi, continuar →"
-            onNext={() => goTo(4)}
+          <YesNoScreen
+            question="Você possui loja virtual?"
+            onSim={() => {
+              setForm((f) => ({ ...f, loja_virtual: "sim" }));
+              goTo(4);
+            }}
+            onNao={() => {
+              setForm((f) => ({ ...f, loja_virtual: "nao" }));
+              goTo(5);
+            }}
           />
         );
 
       case 4:
+        return (
+          <QuestionScreen
+            question="E hoje qual o seu faturamento na loja virtual?"
+            options={FATURAMENTO_LOJA_OPTS}
+            selected={form.faturamento_loja}
+            onSelect={(v) => {
+              setForm((f) => ({ ...f, faturamento_loja: v }));
+              setTimeout(() => goTo(6), 320);
+            }}
+          />
+        );
+
+      case 5:
+        return (
+          <YesNoScreen
+            question="Você gostaria de criar uma loja virtual do zero?"
+            onSim={() => {
+              setForm((f) => ({ ...f, quer_loja_virtual: "sim" }));
+              goTo(6);
+            }}
+            onNao={() => {
+              setForm((f) => ({ ...f, quer_loja_virtual: "nao" }));
+              goTo(6);
+            }}
+          />
+        );
+
+      case 6:
+        return (
+          <InfoScreen
+            title="Antes de continuar, é importante você entender uma coisa."
+            content={`Existem 2 tipos de investimento em Tráfego Pago:\n\n— Verba em anúncios: pago direto à plataforma (Meta/Google)\n— Mão de obra: nossos honorários pela gestão estratégica\n\nÉ como contratar um pintor: você paga a mão de obra e também compra as tintas. São custos separados.`}
+            buttonText="Entendi, continuar →"
+            onNext={() => goTo(7)}
+          />
+        );
+
+      case 7:
         return (
           <QuestionScreen
             question="Como você atende seus leads hoje?"
@@ -590,33 +722,33 @@ export default function TrafegoForm() {
             selected={form.atendimento_leads}
             onSelect={(v) => {
               setForm((f) => ({ ...f, atendimento_leads: v }));
-              setTimeout(() => goTo(5), 320);
+              setTimeout(() => goTo(8), 320);
             }}
           />
         );
 
-      case 5:
+      case 8:
         return (
           <InfoScreen
             title="Você está perdendo vendas sem perceber."
             content={`Sabe quando um cliente te chama no WhatsApp, você demora pra responder e ele já comprou da concorrência? CRM resolve isso.\n\nÉ um sistema que organiza todos os seus leads, dispara mensagem automática na hora certa e não deixa nenhuma venda escapar.`}
             buttonText="Faz sentido, continuar →"
-            onNext={() => goTo(6)}
+            onNext={() => goTo(9)}
           />
         );
 
-      case 6:
-        return <ProvaScreen onNext={() => goTo(7)} />;
+      case 9:
+        return <ProvaScreen onNext={() => goTo(10)} />;
 
-      case 7:
+      case 10:
         return (
           <CommitmentScreen
             onCombo={() => submitAndFinish("combo")}
-            onObjection={() => goTo(8)}
+            onObjection={() => goTo(11)}
           />
         );
 
-      case 8:
+      case 11:
         return (
           <RecoveryScreen
             onTrafego={() => submitAndFinish("trafego")}
@@ -624,7 +756,7 @@ export default function TrafegoForm() {
           />
         );
 
-      case 9:
+      case 12:
         return <ConfirmationScreen />;
 
       default:
@@ -638,18 +770,29 @@ export default function TrafegoForm() {
       style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
     >
       {/* ── Top bar with progress ── */}
-      {screen < 9 && (
+      {screen < 12 && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm">
-          <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-4">
-            <span
-              className={`text-base font-bold text-gray-900 shrink-0 flex items-end gap-0.5 ${unbounded.className}`}
-            >
-              dua
+          <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
+            <div className="flex items-center gap-2 shrink-0">
+              {canGoBack && (
+                <button
+                  onClick={goBack}
+                  className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                  aria-label="Voltar"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
+              )}
               <span
-                className="inline-block w-1.5 h-1.5 rounded-full mb-1 ml-0.5"
-                style={{ backgroundColor: PURPLE }}
-              />
-            </span>
+                className={`text-base font-bold text-gray-900 flex items-end gap-0.5 ${unbounded.className}`}
+              >
+                dua
+                <span
+                  className="inline-block w-1.5 h-1.5 rounded-full mb-1 ml-0.5"
+                  style={{ backgroundColor: PURPLE }}
+                />
+              </span>
+            </div>
 
             <div className="flex-1">
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -673,7 +816,7 @@ export default function TrafegoForm() {
       {/* ── Screen container ── */}
       <div
         className={`flex-1 flex items-center justify-center px-4 pb-8 overflow-hidden ${
-          screen < 9 ? "pt-20" : "pt-8"
+          screen < 12 ? "pt-20" : "pt-8"
         }`}
       >
         <div className="w-full max-w-xl relative">

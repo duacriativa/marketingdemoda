@@ -10,6 +10,9 @@ export async function POST(req: NextRequest) {
       instagram,
       investimento_atual,
       faturamento,
+      loja_virtual,
+      faturamento_loja,
+      quer_loja_virtual,
       atendimento_leads,
       interesse,
       origem,
@@ -41,6 +44,9 @@ Instagram: ${instagram}
 
 Investimento atual em anúncios: ${investimento_atual}
 Faturamento mensal: ${faturamento}
+Possui loja virtual: ${loja_virtual ?? "-"}
+Faturamento na loja virtual: ${faturamento_loja ?? "-"}
+Quer criar loja virtual: ${quer_loja_virtual ?? "-"}
 Como atende leads: ${atendimento_leads}
 
 Interesse: ${interesseLabel}
