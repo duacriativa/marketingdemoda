@@ -30,6 +30,13 @@ const unbounded = Unbounded({ subsets: ["latin"], weight: ["700"], display: "swa
 // Escuro: bg #000000  texto #FFFFFF  secondário #9CA3AF
 // Lime:   #CCFF00
 
+// ─── Vídeos do Instagram
+const INSTAGRAM_VIDEOS = [
+  { code: "DbePWAfuB_E", caption: "Conteúdo estratégico para marcas de moda" },
+  { code: "DcmIuzBuW71", caption: "Bastidores da nossa metodologia" },
+  { code: "DbtGRu1xhFo", caption: "Resultados reais, estratégia real" },
+];
+
 // ─── Dados de prova social
 // Adicione seus prints em /public/provas/ e liste aqui
 const PROOF_IMAGES = [
@@ -393,6 +400,49 @@ export default function DuaLabPage() {
               className="inline-flex items-center gap-2 border border-white/20 text-white font-semibold px-7 py-4 rounded-xl hover:bg-white hover:text-black transition-colors min-h-[52px] touch-manipulation">
               Quero resultados assim
               <ArrowRight size={18} aria-hidden="true" />
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          SEÇÃO 5B — VÍDEOS INSTAGRAM (claro)
+      ══════════════════════════════════════════ */}
+      <section className="py-20 bg-[#F5F5F0] px-6" aria-label="Conteúdo da Dua Criativa no Instagram">
+        <div className="container mx-auto max-w-5xl">
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55 }} className="mb-10">
+            <Label>Conteúdo</Label>
+            <h2 className={`mt-3 text-[clamp(1.8rem,4vw,3rem)] font-black text-[#0A0A0A] leading-tight tracking-tight ${playfair.variable} font-[family-name:var(--font-playfair)]`}>
+              Estratégia que aparece<br />no feed.
+            </h2>
+          </motion.div>
+
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {INSTAGRAM_VIDEOS.map((v) => (
+              <motion.div key={v.code} variants={fadeUp} className="flex flex-col gap-3">
+                <div className="relative w-full overflow-hidden rounded-2xl border border-[#E2E2DC] bg-white" style={{ paddingBottom: "125%" }}>
+                  <iframe
+                    src={`https://www.instagram.com/p/${v.code}/embed/`}
+                    className="absolute inset-0 w-full h-full border-0"
+                    loading="lazy"
+                    title={v.caption}
+                    allowFullScreen
+                    scrolling="no"
+                  />
+                </div>
+                <p className="text-[#6B6B6B] text-xs leading-snug px-1">{v.caption}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.4, delay: 0.2 }} className="mt-8">
+            <a href="https://www.instagram.com/duacriativa/" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 border border-[#E2E2DC] bg-white text-[#0A0A0A] font-semibold px-6 py-3 rounded-xl hover:border-black transition-colors text-sm min-h-[44px] touch-manipulation">
+              <ArrowUpRight size={16} aria-hidden="true" />
+              Ver mais no Instagram
             </a>
           </motion.div>
         </div>
