@@ -1,11 +1,15 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import type { Variants } from "framer-motion";
+import { Playfair_Display } from "next/font/google";
 import { Unbounded } from "next/font/google";
 import Image from "next/image";
+import { Suspense } from "react";
 import {
   ArrowRight,
+  ArrowUpRight,
   BarChart3,
   Megaphone,
   Users,
@@ -14,329 +18,278 @@ import {
   ChevronDown,
   Star,
   TrendingUp,
-  Zap,
-  MessageCircle,
+  ImageIcon,
 } from "lucide-react";
-import type { Variants } from "framer-motion";
-import { Suspense, useState } from "react";
 import LeadForm from "@/components/LeadForm";
 
-const unbounded = Unbounded({ subsets: ["latin"], weight: ["700", "900"], display: "swap" });
+const playfair = Playfair_Display({ subsets: ["latin"], weight: ["700", "900"], display: "swap", variable: "--font-playfair" });
+const unbounded = Unbounded({ subsets: ["latin"], weight: ["700"], display: "swap" });
 
-const STATS = [
-  { value: "+R$30M", label: "em vendas geradas" },
-  { value: "14.7×", label: "crescimento médio em e-commerce" },
-  { value: "100%", label: "foco em marcas de moda" },
-  { value: "−89%", label: "redução de CPL em clientes ativos" },
+// ─── Paleta
+// Claro: bg #F5F5F0  texto #0A0A0A  secondário #6B6B6B  borda #E2E2DC
+// Escuro: bg #000000  texto #FFFFFF  secondário #9CA3AF
+// Lime:   #CCFF00
+
+// ─── Dados de prova social
+// Adicione seus prints em /public/provas/ e liste aqui
+const PROOF_IMAGES = [
+  { src: "/provas/prova-1.jpg", caption: "R$ 300k em 1 mês — cliente de moda feminina CE" },
+  { src: "/provas/prova-2.jpg", caption: "ROAS 6.2× em 90 dias — varejo SP" },
+  { src: "/provas/prova-3.jpg", caption: "−89% no CPL — atacado moda praia CE" },
+  { src: "/provas/prova-4.jpg", caption: "Vendemos 4k em 1h após campanha" },
+  { src: "/provas/prova-5.jpg", caption: "1000 pedidos em 48h — e-commerce moda" },
+  { src: "/provas/prova-6.jpg", caption: "R$ 12k gerados em 10 minutos" },
 ];
 
 const PILLARS = [
-  {
-    icon: Megaphone,
-    title: "Social Media Estratégico",
-    desc: "Calendário editorial, produção visual e narrativa de marca alinhados ao DNA da sua coleção.",
-  },
-  {
-    icon: BarChart3,
-    title: "Tráfego Pago",
-    desc: "Campanhas no Meta, Google e TikTok gerenciadas por quem entende de moda — não de qualquer nicho.",
-  },
-  {
-    icon: Users,
-    title: "CRM & Comercial",
-    desc: "Estrutura ativa de retenção e reativação: fluxo de follow-up, prospecção e gestão no Kommo.",
-  },
-  {
-    icon: Brain,
-    title: "Inteligência de Dados",
-    desc: "Dashboard com ROAS, CAC e ticket médio em tempo real. Decisões baseadas em número, não em feeling.",
-  },
+  { num: "01", icon: Megaphone, title: "Social Media", desc: "Calendário editorial, produção visual e narrativa de marca alinhados ao DNA da sua coleção." },
+  { num: "02", icon: BarChart3, title: "Tráfego Pago", desc: "Meta, Google e TikTok gerenciados por quem entende de moda — não de qualquer nicho." },
+  { num: "03", icon: Users, title: "CRM & Comercial", desc: "Fluxo ativo de retenção: reativação de leads, follow-up e prospecção no Kommo." },
+  { num: "04", icon: Brain, title: "Inteligência de Dados", desc: "Dashboard com ROAS, CAC e ticket médio. Decisões baseadas em número, nunca em feeling." },
 ];
 
 const TIMELINE = [
-  { week: "Semana 1–2", title: "Imersão na Marca", desc: "Auditoria completa: posicionamento, visual, tom de voz, concorrência e histórico de campanhas." },
-  { week: "Semana 3–4", title: "Diagnóstico e Estratégia", desc: "Plano de crescimento customizado com canais, métricas-alvo e cronograma de execução." },
-  { week: "Mês 2", title: "Estruturação e Lançamento", desc: "Campanhas no ar, CRM configurado, conteúdo publicado. Todas as peças do motor em funcionamento." },
-  { week: "Mês 3+", title: "Otimização Contínua", desc: "Ciclo mensal de análise, ajuste e escala. Reunião estratégica + relatório detalhado todo mês." },
+  { num: "01", week: "Semana 1–2", title: "Imersão na Marca", desc: "Auditoria completa: posicionamento, visual, tom de voz, concorrência e histórico de campanhas." },
+  { num: "02", week: "Semana 3–4", title: "Diagnóstico e Estratégia", desc: "Plano de crescimento com canais, métricas-alvo e cronograma. Sem achismo, sem \"vamos ver\"." },
+  { num: "03", week: "Mês 2", title: "Estruturação e Lançamento", desc: "Campanhas no ar, CRM configurado, conteúdo publicado. Todas as peças do motor em funcionamento." },
+  { num: "04", week: "Mês 3+", title: "Otimização e Escala", desc: "Ciclo mensal: análise, ajuste, escala. Reunião estratégica + relatório detalhado todo mês." },
 ];
 
 const FAQS = [
-  {
-    q: "Qual o custo de gestão de tráfego pago para marca de moda?",
-    a: "Nossos planos de gestão de tráfego pago para marcas de moda começam a partir de R$1.800/mês de honorários de agência. Esse valor é separado da verba de anúncios, que fica diretamente na plataforma (Meta, Google). Trabalhamos com contrato mensal sem fidelidade obrigatória.",
-  },
-  {
-    q: "Qual a diferença entre verba de anúncios e honorários de agência?",
-    a: "Verba de anúncios é o dinheiro que vai direto para o Facebook/Google/TikTok para veicular os anúncios — fica na sua conta e você tem controle total. Honorários de agência é o que você paga à Dua pelo planejamento, criação, gestão e otimização das campanhas. São dois custos separados.",
-  },
-  {
-    q: "Como funciona o onboarding com a Dua Criativa?",
-    a: "O onboarding dura 4 semanas. Na primeira semana fazemos imersão completa na marca. Na segunda, diagnóstico e estratégia. No segundo mês, toda a estrutura vai ao ar — campanhas, CRM e conteúdo. A partir do terceiro mês entra o ciclo de otimização e escala com reunião mensal.",
-  },
-  {
-    q: "A Dua Criativa atende marcas fora de Fortaleza?",
-    a: "Sim. Atendemos marcas de todo o Brasil de forma 100% remota. Nosso processo de imersão, estratégia e relatórios funciona inteiramente online. Temos clientes ativos em Fortaleza, São Paulo, Rio de Janeiro e outras cidades.",
-  },
-  {
-    q: "Quanto tempo leva para ver resultado com tráfego pago?",
-    a: "Os primeiros indicadores aparecem já nas primeiras 2 a 4 semanas, quando as campanhas entram na fase de aprendizado das plataformas. Resultados consistentes e escaláveis normalmente se consolidam a partir do segundo ou terceiro mês, após o ciclo completo de otimização.",
-  },
-  {
-    q: "A Dua Criativa também cria lojas virtuais para marcas de moda?",
-    a: "Sim, desenvolvemos e-commerces completos para marcas de moda, integrados à estratégia de tráfego e CRM. A loja virtual faz parte do ecossistema DUA LAB, garantindo que design, performance e gestão de tráfego falem a mesma língua.",
-  },
+  { q: "Qual o custo de gestão de tráfego pago para marca de moda?", a: "Nossos planos de gestão de tráfego pago para marcas de moda começam a partir de R$1.800/mês de honorários de agência — separados da verba de anúncios, que fica na sua conta. Trabalhamos com contrato mensal sem fidelidade obrigatória." },
+  { q: "Qual a diferença entre verba de anúncios e honorários de agência?", a: "Verba de anúncios é o valor que vai direto para o Facebook/Google — fica na sua conta e você tem controle total. Honorários de agência é o que você paga à Dua pelo planejamento, criação, gestão e otimização. São dois custos separados." },
+  { q: "Como funciona o onboarding com a Dua Criativa?", a: "O onboarding dura 4 semanas. Na primeira fazemos imersão completa. Na segunda, diagnóstico e estratégia. No segundo mês, toda a estrutura vai ao ar. A partir do terceiro mês entra o ciclo de otimização com reunião mensal." },
+  { q: "A Dua Criativa atende marcas fora de Fortaleza?", a: "Sim. Atendemos marcas de todo o Brasil 100% remoto. Nosso processo de imersão, estratégia e relatórios funciona inteiramente online. Temos clientes ativos em Fortaleza, São Paulo, Rio de Janeiro e outras cidades." },
+  { q: "Quanto tempo leva para ver resultado com tráfego pago?", a: "Primeiros indicadores aparecem nas 2 a 4 primeiras semanas, durante o aprendizado das plataformas. Resultados consistentes e escaláveis se consolidam a partir do segundo ou terceiro mês, após o ciclo completo de otimização." },
+  { q: "A Dua Criativa também cria lojas virtuais para marcas de moda?", a: "Sim, desenvolvemos e-commerces completos para marcas de moda, integrados à estratégia de tráfego e CRM. A loja virtual faz parte do ecossistema DUA LAB — design, performance e gestão de tráfego na mesma linguagem." },
 ];
 
-const CASE = {
-  brand: "Metricana",
-  segment: "Moda Feminina · E-commerce",
-  before: "R$ 77k/mês",
-  after: "R$ 1,1M/mês",
-  multiplier: "14.7×",
-  period: "14 meses",
-  quote: "A Dua não é só uma agência. É o time de marketing que eu precisava pra escalar sem perder identidade de marca.",
+// ─── Variantes de animação
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 32 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
-
 const stagger: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
+  show: { transition: { staggerChildren: 0.09 } },
 };
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-};
+// ─── Componentes auxiliares
+function Label({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
+  return (
+    <span className={`inline-flex items-center gap-1.5 text-[11px] font-bold tracking-[0.15em] uppercase ${dark ? "text-dualime" : "text-[#0A0A0A]/50"}`}>
+      {children}
+    </span>
+  );
+}
 
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-white/10">
+    <div className="border-b border-[#E2E2DC]">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-start justify-between gap-4 py-5 text-left group"
+        className="w-full flex items-start justify-between gap-4 py-5 text-left group cursor-pointer"
         aria-expanded={open}
       >
-        <span className="text-white font-semibold text-base leading-snug group-hover:text-dualime transition-colors">
+        <span className="text-[#0A0A0A] font-semibold text-base leading-snug group-hover:text-black transition-colors">
           {q}
         </span>
         <ChevronDown
-          className={`w-5 h-5 text-dualime flex-shrink-0 mt-0.5 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          className={`w-5 h-5 text-[#0A0A0A]/40 flex-shrink-0 mt-0.5 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
           aria-hidden="true"
         />
       </button>
       <motion.div
         initial={false}
         animate={open ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.28, ease: "easeOut" }}
         className="overflow-hidden"
       >
-        <p className="text-gray-400 text-sm leading-relaxed pb-5">{a}</p>
+        <p className="text-[#6B6B6B] text-[15px] leading-relaxed pb-5">{a}</p>
       </motion.div>
     </div>
   );
 }
 
+function ProofCard({ src, caption }: { src: string; caption: string }) {
+  const [failed, setFailed] = useState(false);
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="relative aspect-[9/16] bg-white/5 rounded-2xl overflow-hidden border border-white/10">
+        {failed ? (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/20">
+            <ImageIcon size={28} aria-hidden="true" />
+            <span className="text-xs text-center px-4 leading-relaxed">
+              Adicione o print em<br />
+              <code className="text-white/30 text-[10px]">/public{src}</code>
+            </span>
+          </div>
+        ) : (
+          <img
+            src={src}
+            alt={caption}
+            onError={() => setFailed(true)}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        )}
+      </div>
+      <p className="text-[#9CA3AF] text-xs leading-snug px-1">{caption}</p>
+    </div>
+  );
+}
+
+// ─── Página principal
 export default function DuaLabPage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const bgY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion ? ["0%", "0%"] : ["0%", "30%"]
-  );
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const bgY = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? ["0%", "0%"] : ["0%", "28%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? ["0%", "0%"] : ["0%", "12%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
   return (
-    <main className="min-h-screen bg-duabg text-white selection:bg-dualime selection:text-black">
-      {/* Announcement bar */}
-      <div className="bg-dualime text-black text-center py-3 px-4 text-sm font-bold tracking-wide relative z-50">
+    <main className={`min-h-screen bg-[#F5F5F0] text-[#0A0A0A] selection:bg-dualime selection:text-black ${playfair.variable}`}>
+
+      {/* ── Announcement bar */}
+      <div className="bg-dualime text-black text-center py-3 px-4 text-sm font-bold tracking-wide">
         ⚡ Apenas 3 vagas disponíveis para outubro 2026 — garanta a sua agora
       </div>
 
-      {/* ─── HERO with parallax ─── */}
-      <section ref={heroRef} className="relative min-h-[100dvh] flex flex-col justify-center overflow-hidden px-6">
-        {/* Parallax background */}
+      {/* ══════════════════════════════════════════
+          SEÇÃO 1 — HERO (escuro, parallax)
+      ══════════════════════════════════════════ */}
+      <section ref={heroRef} className="relative min-h-[100dvh] flex flex-col justify-end pb-20 overflow-hidden bg-black px-6 pt-6">
+        {/* Parallax bg */}
         <motion.div className="absolute inset-0 z-0" style={{ y: bgY }}>
-          <Image
-            src="/Prancheta%201%20copiar%209.jpg"
-            alt="Bastidor de moda — campanha de fotos"
-            fill
-            priority
-            quality={80}
-            className="object-cover object-center scale-110"
-          />
-          <div className="absolute inset-0 bg-black/72" />
+          <Image src="/Prancheta%201%20copiar%209.jpg" alt="Campanha de moda" fill priority quality={80} className="object-cover object-center scale-110" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30" />
         </motion.div>
 
-        {/* Purple glows */}
-        <div
-          className="absolute z-[2] pointer-events-none"
-          style={{
-            top: "-10%", right: "-5%", width: "55vw", height: "70vh",
-            background: "radial-gradient(ellipse 60% 70% at 70% 30%, rgba(120,50,220,0.55) 0%, rgba(100,30,200,0.3) 35%, transparent 80%)",
-            filter: "blur(70px)", mixBlendMode: "screen",
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute z-[2] pointer-events-none"
-          style={{
-            bottom: "5%", left: "-8%", width: "45vw", height: "55vh",
-            background: "radial-gradient(ellipse 55% 65% at 30% 70%, rgba(140,60,230,0.4) 0%, rgba(90,20,180,0.2) 45%, transparent 80%)",
-            filter: "blur(80px)", mixBlendMode: "screen",
-          }}
-          aria-hidden="true"
-        />
-        {/* Subtle grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(204,255,0,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(204,255,0,0.025)_1px,transparent_1px)] bg-[size:50px_50px] z-[3]" aria-hidden="true" />
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent z-[4]" aria-hidden="true" />
+        {/* Glow decorativo */}
+        <div className="absolute top-0 right-0 w-[50vw] h-[60vh] pointer-events-none z-[1]"
+          style={{ background: "radial-gradient(ellipse at 75% 20%, rgba(120,50,220,0.45) 0%, transparent 70%)", filter: "blur(80px)", mixBlendMode: "screen" }}
+          aria-hidden="true" />
 
-        <motion.div
-          style={{ opacity: heroOpacity }}
-          className="container mx-auto max-w-3xl relative z-10 text-center"
-        >
+        {/* Conteúdo do hero */}
+        <motion.div style={{ y: contentY, opacity: heroOpacity }} className="relative z-10 container mx-auto max-w-5xl">
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className={`flex items-end justify-center gap-1 mb-5 ${unbounded.className}`}
-          >
-            <span className="text-3xl font-bold text-white leading-none">dua</span>
-            <span className="w-2.5 h-2.5 rounded-full bg-dualime mb-1 shrink-0" aria-hidden="true" />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
+            className={`flex items-end gap-1 mb-8 ${unbounded.className}`}>
+            <span className="text-2xl font-bold text-white">dua</span>
+            <span className="w-2 h-2 rounded-full bg-dualime mb-0.5" aria-hidden="true" />
           </motion.div>
 
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center gap-2 bg-dualime/10 border border-dualime/30 text-dualime text-xs font-bold px-4 py-2 rounded-full mb-6"
-          >
-            <span className="w-2 h-2 bg-dualime rounded-full animate-pulse" aria-hidden="true" />
-            Método DUA LAB — Especialistas em Moda
-          </motion.div>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10">
+            {/* Headline principal */}
+            <div className="flex-1">
+              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.05 }}>
+                <Label dark>Método DUA LAB · Especialistas em Moda</Label>
+              </motion.div>
 
-          {/* Hero headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl md:text-6xl font-black leading-[1.05] tracking-tighter text-white mb-6"
-          >
-            <span className="text-dualime">+R$30M</span> em vendas<br />
-            gerados para marcas<br />
-            <span className="text-dualime">de moda.</span>
-          </motion.h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+                className="mt-4 text-[clamp(2.6rem,7vw,5.5rem)] font-black leading-[1.02] tracking-tighter text-white"
+              >
+                Hoje, sua marca<br />
+                está sendo percebida<br />
+                do jeito <span className="text-dualime">certo?</span>
+              </motion.h1>
 
-          {/* Diagnostic hook question */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8 font-medium"
-          >
-            Hoje, olhando para o Instagram da sua marca, você sente que ela está sendo percebida exatamente como você gostaria?
-          </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+                className="mt-5 text-[17px] text-white/70 max-w-lg leading-relaxed"
+              >
+                Somos a agência que pensa como sócia, executa como time interno e estrutura marcas de moda para escalar sem improviso.
+              </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3"
-          >
-            <a
-              href="#contact"
-              className="flex items-center justify-center gap-2 bg-dualime text-duabg font-black px-8 py-4 rounded-xl hover:bg-dualime/90 transition-all w-full sm:w-auto text-base"
-              aria-label="Quero que minha marca seja percebida corretamente"
+              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}
+                className="mt-8 flex flex-col sm:flex-row gap-3">
+                <a href="#contact"
+                  className="inline-flex items-center justify-center gap-2 bg-dualime text-black font-black px-7 py-4 rounded-xl hover:bg-white transition-colors text-base min-h-[52px] touch-manipulation"
+                  aria-label="Agendar reunião estratégica gratuita">
+                  Quero mudar isso agora
+                  <ArrowRight size={18} aria-hidden="true" />
+                </a>
+                <a href="#metodo"
+                  className="inline-flex items-center justify-center gap-2 border border-white/20 text-white font-semibold px-7 py-4 rounded-xl hover:bg-white/8 transition-colors text-base min-h-[52px] touch-manipulation">
+                  Ver o método
+                  <ChevronDown size={16} aria-hidden="true" />
+                </a>
+              </motion.div>
+            </div>
+
+            {/* Stat flutuante */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
+              className="flex-shrink-0 bg-black/60 backdrop-blur-sm border border-white/10 rounded-3xl p-7 text-center min-w-[180px]"
             >
-              Quero mudar isso agora
-              <ArrowRight size={20} aria-hidden="true" />
-            </a>
-            <a
-              href="#metodo"
-              className="flex items-center justify-center gap-2 bg-white/5 border border-white/20 text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition-all w-full sm:w-auto text-base"
-            >
-              Ver o método
-              <ChevronDown size={18} aria-hidden="true" />
-            </a>
-          </motion.div>
+              <div className="text-5xl font-black text-dualime leading-none">+R$30M</div>
+              <div className="text-white/50 text-sm mt-2 leading-snug">em vendas geradas<br />para marcas de moda</div>
+            </motion.div>
+          </div>
         </motion.div>
       </section>
 
-      {/* ─── STATS BAR ─── */}
-      <section className="py-14 bg-duagrey border-y border-white/5" aria-label="Números da Dua Criativa">
-        <div className="container mx-auto max-w-5xl px-6">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-80px" }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
-          >
-            {STATS.map((s) => (
-              <motion.div key={s.value} variants={fadeUp}>
-                <div className={`text-3xl md:text-4xl font-black text-dualime mb-1 ${unbounded.className}`}>
-                  {s.value}
+      {/* ══════════════════════════════════════════
+          SEÇÃO 2 — STATS (claro)
+      ══════════════════════════════════════════ */}
+      <section className="py-20 bg-[#F5F5F0] px-6" aria-label="Números da Dua Criativa">
+        <div className="container mx-auto max-w-5xl">
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { v: "+R$30M", l: "em vendas geradas" },
+              { v: "14.7×", l: "crescimento médio em e-commerce" },
+              { v: "−89%", l: "redução de CPL em clientes ativos" },
+              { v: "100%", l: "foco em marcas de moda" },
+            ].map((s) => (
+              <motion.div key={s.v} variants={fadeUp} className="text-center md:text-left">
+                <div className={`text-4xl md:text-5xl font-black text-[#0A0A0A] leading-none ${playfair.variable} font-[family-name:var(--font-playfair)]`}>
+                  {s.v}
                 </div>
-                <div className="text-gray-400 text-sm">{s.label}</div>
+                <div className="text-[#6B6B6B] text-sm mt-2 leading-snug">{s.l}</div>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* ─── POSITIONING "Não somos generalistas" ─── */}
-      <section className="py-24 px-6 bg-duabg" id="metodo">
+      {/* ══════════════════════════════════════════
+          SEÇÃO 3 — POSICIONAMENTO (escuro, editorial)
+      ══════════════════════════════════════════ */}
+      <section className="py-24 bg-black px-6">
         <div className="container mx-auto max-w-5xl">
-          <div className="grid md:grid-cols-2 gap-14 items-center">
-            {/* Left: copy */}
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-80px" }}
-            >
-              <motion.div variants={fadeUp} className="inline-flex items-center gap-2 bg-dualime/10 border border-dualime/20 text-dualime text-xs font-bold px-3 py-1.5 rounded-full mb-5">
-                <Zap size={12} aria-hidden="true" />
-                Posicionamento
+          <div className="grid md:grid-cols-2 gap-14 items-start">
+            {/* Coluna esquerda — big statement */}
+            <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}>
+              <motion.div variants={fadeUp}>
+                <Label dark>Posicionamento</Label>
               </motion.div>
-              <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-black text-white mb-5 leading-tight">
-                Não somos uma agência<br />
-                <span className="text-dualime">generalista.</span>
+              <motion.h2 variants={fadeUp}
+                className={`mt-4 text-[clamp(2rem,5vw,3.5rem)] font-black text-white leading-[1.08] tracking-tight ${playfair.variable} font-[family-name:var(--font-playfair)]`}>
+                Não somos uma agência generalista.
               </motion.h2>
-              <motion.p variants={fadeUp} className="text-gray-400 text-base leading-relaxed mb-5">
+              <motion.p variants={fadeUp} className="mt-6 text-white/60 text-[16px] leading-relaxed">
                 Enquanto agências genéricas aprendem sobre moda enquanto consomem seu budget, a Dua já chegou especializada. Entendemos sazonalidade de coleção, visual de marca feminina, o ciclo de compra do varejo de moda e o que faz uma campanha de lançamento converter.
               </motion.p>
-              <motion.p variants={fadeUp} className="text-gray-400 text-base leading-relaxed mb-8">
+              <motion.p variants={fadeUp} className="mt-4 text-white/60 text-[16px] leading-relaxed">
                 Pensamos como sócio, executamos como time interno. Do posicionamento ao LTV, gerenciamos o ciclo completo da sua marca.
               </motion.p>
-              <motion.a
-                variants={fadeUp}
-                href="#contact"
-                className="inline-flex items-center gap-2 bg-dualime text-duabg font-black px-7 py-3.5 rounded-xl hover:bg-dualime/90 transition-all"
-              >
-                Quero uma reunião estratégica
-                <ArrowRight size={18} aria-hidden="true" />
-              </motion.a>
+              <motion.div variants={fadeUp} className="mt-8">
+                <a href="#contact"
+                  className="inline-flex items-center gap-2 bg-dualime text-black font-black px-7 py-3.5 rounded-xl hover:bg-white transition-colors min-h-[52px] touch-manipulation">
+                  Quero uma reunião estratégica
+                  <ArrowUpRight size={18} aria-hidden="true" />
+                </a>
+              </motion.div>
             </motion.div>
 
-            {/* Right: differentiators */}
-            <motion.ul
-              variants={stagger}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-80px" }}
-              className="space-y-4"
-              aria-label="Diferenciais da Dua Criativa"
-            >
+            {/* Coluna direita — checklist */}
+            <motion.ul variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}
+              className="space-y-4 mt-2" aria-label="Diferenciais da Dua Criativa">
               {[
                 "100% focada no segmento de moda e vestuário",
                 "Time com experiência em tráfego, social, CRM e e-commerce",
@@ -344,10 +297,10 @@ export default function DuaLabPage() {
                 "Reunião estratégica mensal incluída em todos os planos",
                 "Sem contrato de fidelidade — ficamos pelo resultado",
                 "Onboarding estruturado em 30 dias, sem achismo",
-              ].map((item, i) => (
-                <motion.li key={i} variants={fadeUp} className="flex items-start gap-3">
+              ].map((item) => (
+                <motion.li key={item} variants={fadeUp} className="flex items-start gap-3 bg-white/4 rounded-xl px-5 py-4 border border-white/8">
                   <CheckCircle2 className="w-5 h-5 text-dualime flex-shrink-0 mt-0.5" aria-hidden="true" />
-                  <span className="text-gray-300 text-base">{item}</span>
+                  <span className="text-white/80 text-[15px] leading-snug">{item}</span>
                 </motion.li>
               ))}
             </motion.ul>
@@ -355,307 +308,271 @@ export default function DuaLabPage() {
         </div>
       </section>
 
-      {/* ─── DUA LAB PILLARS ─── */}
-      <section className="py-24 px-6 bg-duagrey">
+      {/* ══════════════════════════════════════════
+          SEÇÃO 4 — DUA LAB MÉTODO (claro, cards numerados)
+      ══════════════════════════════════════════ */}
+      <section id="metodo" className="py-24 bg-[#F5F5F0] px-6">
         <div className="container mx-auto max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center mb-14"
-          >
-            <div className="inline-flex items-center gap-2 bg-dualime/10 border border-dualime/20 text-dualime text-xs font-bold px-3 py-1.5 rounded-full mb-5">
-              <BarChart3 size={12} aria-hidden="true" />
-              Solução completa
-            </div>
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55, ease: "easeOut" }} className="mb-14">
+            <Label>Solução completa</Label>
+            <h2 className={`mt-3 text-[clamp(2rem,5vw,3.5rem)] font-black text-[#0A0A0A] leading-tight tracking-tight ${playfair.variable} font-[family-name:var(--font-playfair)]`}>
               DUA LAB — Marketing 360°
             </h2>
-            <p className="text-gray-400 text-lg max-w-xl mx-auto">
-              Uma equipe dedicada para a sua marca de moda. Todos os canais integrados, um único resultado.
+            <p className="mt-3 text-[#6B6B6B] text-[16px] max-w-xl leading-relaxed">
+              Todos os canais da sua marca integrados numa única estratégia. Um time dedicado, um único resultado.
             </p>
           </motion.div>
 
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-80px" }}
-            className="grid md:grid-cols-2 gap-6"
-          >
-            {PILLARS.map((pillar) => {
+          {/* Grid de pilares numerados */}
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}
+            className="grid md:grid-cols-4 gap-0 border border-[#E2E2DC] rounded-2xl overflow-hidden">
+            {PILLARS.map((pillar, i) => {
               const Icon = pillar.icon;
               return (
-                <motion.div
-                  key={pillar.title}
-                  variants={fadeUp}
-                  className="bg-duabg rounded-2xl p-7 border border-white/8 hover:border-dualime/30 transition-colors group"
-                >
-                  <div className="flex-shrink-0 w-12 h-12 bg-dualime/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-dualime/20 transition-colors">
-                    <Icon className="w-6 h-6 text-dualime" aria-hidden="true" />
+                <motion.div key={pillar.num} variants={fadeUp}
+                  className={`p-7 flex flex-col gap-4 bg-white hover:bg-[#F5F5F0] transition-colors group ${i < PILLARS.length - 1 ? "border-b md:border-b-0 md:border-r border-[#E2E2DC]" : ""}`}>
+                  <div className="flex items-start justify-between">
+                    <span className={`text-[2.5rem] font-black text-[#E2E2DC] leading-none ${playfair.variable} font-[family-name:var(--font-playfair)]`}>
+                      {pillar.num}
+                    </span>
+                    <div className="w-9 h-9 rounded-lg bg-[#F5F5F0] group-hover:bg-dualime/10 flex items-center justify-center transition-colors">
+                      <Icon className="w-4.5 h-4.5 text-[#0A0A0A]/50 group-hover:text-dualime transition-colors" size={18} aria-hidden="true" />
+                    </div>
                   </div>
-                  <h3 className="font-black text-white text-lg mb-2">{pillar.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{pillar.desc}</p>
+                  <div>
+                    <h3 className="font-black text-[#0A0A0A] text-[15px] leading-snug mb-2">{pillar.title}</h3>
+                    <p className="text-[#6B6B6B] text-[13px] leading-relaxed">{pillar.desc}</p>
+                  </div>
                 </motion.div>
               );
             })}
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center mt-12"
-          >
-            <a
-              href="#contact"
-              className="group inline-flex items-center gap-2 px-8 py-4 bg-dualime text-duabg font-black text-lg rounded-full hover:brightness-110 transition-all"
-            >
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5, delay: 0.2 }} className="mt-10 flex items-center gap-4">
+            <a href="#contact"
+              className="inline-flex items-center gap-2 bg-black text-white font-black px-7 py-3.5 rounded-xl hover:bg-dualime hover:text-black transition-colors min-h-[52px] touch-manipulation">
               Quero conhecer o DUA LAB
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+              <ArrowRight size={18} aria-hidden="true" />
+            </a>
+            <p className="text-[#6B6B6B] text-sm">Reunião estratégica · Gratuita · Sem compromisso</p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          SEÇÃO 5 — PROVAS REAIS (escuro, prints)
+      ══════════════════════════════════════════ */}
+      <section className="py-24 bg-black px-6" aria-label="Provas de resultado de clientes">
+        <div className="container mx-auto max-w-5xl">
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55 }} className="mb-12">
+            <Label dark>Provas reais</Label>
+            <h2 className={`mt-3 text-[clamp(2rem,5vw,3.5rem)] font-black text-white leading-tight tracking-tight ${playfair.variable} font-[family-name:var(--font-playfair)]`}>
+              Resultados que os clientes<br />
+              <span className="text-dualime">mandam no WhatsApp.</span>
+            </h2>
+            <p className="mt-3 text-white/50 text-[16px] max-w-lg leading-relaxed">
+              Dashboards reais, conversas reais. Nada de mockup ou número inventado.
+            </p>
+          </motion.div>
+
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}
+            className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {PROOF_IMAGES.map((img) => (
+              <motion.div key={img.src} variants={fadeUp}>
+                <ProofCard src={img.src} caption={img.caption} />
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5, delay: 0.3 }} className="mt-10 text-center">
+            <a href="#contact"
+              className="inline-flex items-center gap-2 border border-white/20 text-white font-semibold px-7 py-4 rounded-xl hover:bg-white hover:text-black transition-colors min-h-[52px] touch-manipulation">
+              Quero resultados assim
+              <ArrowRight size={18} aria-hidden="true" />
             </a>
           </motion.div>
         </div>
       </section>
 
-      {/* ─── CASE DESTAQUE — Metricana ─── */}
-      <section className="py-24 px-6 bg-duabg" id="cases" aria-label="Case de sucesso">
-        <div className="container mx-auto max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-14"
-          >
-            <div className="inline-flex items-center gap-2 bg-dualime/10 border border-dualime/20 text-dualime text-xs font-bold px-3 py-1.5 rounded-full mb-5">
-              <TrendingUp size={12} aria-hidden="true" />
-              Case real
-            </div>
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-              De R$77k para R$1,1M/mês
-            </h2>
-            <p className="text-gray-400 text-lg">
-              Um crescimento de 14.7× em 14 meses. Com método, não com sorte.
-            </p>
+      {/* ══════════════════════════════════════════
+          SEÇÃO 6 — CASE METRICANA (claro, editorial)
+      ══════════════════════════════════════════ */}
+      <section className="py-24 bg-[#F5F5F0] px-6" id="cases">
+        <div className="container mx-auto max-w-5xl">
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55 }} className="mb-4">
+            <Label>Case real</Label>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-duagrey rounded-3xl overflow-hidden border border-dualime/20"
-          >
-            {/* Card header */}
-            <div className="bg-dualime px-8 py-5 flex items-center justify-between">
-              <div>
-                <span className="font-black text-black text-lg">{CASE.brand}</span>
-                <span className="ml-3 text-black/60 text-sm font-medium">{CASE.segment}</span>
-              </div>
-              <div className="bg-black text-dualime rounded-xl px-4 py-2 text-sm font-black">
-                {CASE.period}
-              </div>
-            </div>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Números grandes */}
+            <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}>
+              <motion.div variants={fadeUp} className="flex items-start gap-3 mb-6">
+                <div>
+                  <div className="text-[#6B6B6B] text-sm mb-1">Faturamento antes</div>
+                  <div className="text-4xl font-black text-[#0A0A0A]/30 line-through">R$ 77k/mês</div>
+                </div>
+              </motion.div>
+              <motion.div variants={fadeUp}>
+                <TrendingUp className="w-8 h-8 text-dualime mb-3" aria-hidden="true" />
+                <div className="text-[#6B6B6B] text-sm mb-1">Faturamento depois — 14 meses</div>
+                <div className={`text-[clamp(3rem,9vw,6rem)] font-black text-[#0A0A0A] leading-none ${playfair.variable} font-[family-name:var(--font-playfair)]`}>
+                  R$ 1,1M<span className="text-dualime">/mês</span>
+                </div>
+                <div className="mt-3 inline-flex items-center gap-2 bg-[#0A0A0A] text-dualime text-sm font-black px-4 py-2 rounded-full">
+                  14.7× em 14 meses
+                </div>
+              </motion.div>
+            </motion.div>
 
-            {/* Before / After */}
-            <div className="p-8">
-              <div className="flex items-center justify-center gap-8 mb-8">
-                <div className="text-center">
-                  <div className="text-xs text-gray-500 mb-2 uppercase tracking-widest font-bold">Antes</div>
-                  <div className="text-2xl md:text-3xl font-black text-gray-500 line-through">{CASE.before}</div>
-                  <div className="text-xs text-gray-600 mt-1">Faturamento/mês</div>
+            {/* Quote + info */}
+            <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}>
+              <motion.div variants={fadeUp} className="bg-white border border-[#E2E2DC] rounded-2xl p-8">
+                <div className="flex items-center gap-1 mb-5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-dualime text-dualime" aria-hidden="true" />
+                  ))}
                 </div>
-                <div className="flex flex-col items-center gap-1">
-                  <ArrowRight className="w-8 h-8 text-dualime" aria-hidden="true" />
-                  <span className="text-dualime font-black text-xl">{CASE.multiplier}</span>
+                <p className="text-[#0A0A0A] text-[17px] leading-relaxed font-medium mb-6">
+                  "A Dua não é só uma agência. É o time de marketing que eu precisava pra escalar sem perder identidade de marca."
+                </p>
+                <div>
+                  <div className="font-bold text-[#0A0A0A] text-sm">Fundadora — Metricana</div>
+                  <div className="text-[#6B6B6B] text-xs mt-0.5">Moda Feminina · E-commerce · CE</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-xs text-gray-400 mb-2 uppercase tracking-widest font-bold">Depois</div>
-                  <div className="text-2xl md:text-3xl font-black text-dualime">{CASE.after}</div>
-                  <div className="text-xs text-gray-400 mt-1">Faturamento/mês</div>
-                </div>
-              </div>
-
-              {/* Quote */}
-              <div className="bg-duabg rounded-2xl p-6 border border-white/8">
-                <div className="flex items-start gap-3">
-                  <MessageCircle className="w-5 h-5 text-dualime flex-shrink-0 mt-0.5" aria-hidden="true" />
-                  <div>
-                    <p className="text-gray-300 text-base italic leading-relaxed mb-3">
-                      "{CASE.quote}"
-                    </p>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 text-dualime fill-dualime" aria-hidden="true" />
-                      ))}
-                      <span className="text-gray-500 text-xs ml-2">— Fundadora, {CASE.brand}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="px-8 pb-8">
-              <a
-                href="#contact"
-                className="group inline-flex items-center gap-2 px-8 py-4 bg-dualime text-duabg font-black text-base rounded-full hover:brightness-110 transition-all"
-              >
-                Quero resultados assim para a minha marca
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-              </a>
-            </div>
-          </motion.div>
+              </motion.div>
+              <motion.div variants={fadeUp} className="mt-6">
+                <a href="#contact"
+                  className="inline-flex items-center gap-2 bg-black text-white font-black px-7 py-3.5 rounded-xl hover:bg-dualime hover:text-black transition-colors min-h-[52px] touch-manipulation">
+                  Quero resultados assim
+                  <ArrowRight size={18} aria-hidden="true" />
+                </a>
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* ─── ONBOARDING TIMELINE ─── */}
-      <section className="py-24 px-6 bg-duagrey">
-        <div className="container mx-auto max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-14"
-          >
-            <div className="inline-flex items-center gap-2 bg-dualime/10 border border-dualime/20 text-dualime text-xs font-bold px-3 py-1.5 rounded-full mb-5">
-              <CheckCircle2 size={12} aria-hidden="true" />
-              Na Prática
-            </div>
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-              Do onboarding à escala
+      {/* ══════════════════════════════════════════
+          SEÇÃO 7 — TIMELINE ONBOARDING (escuro)
+      ══════════════════════════════════════════ */}
+      <section className="py-24 bg-black px-6">
+        <div className="container mx-auto max-w-5xl">
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55 }} className="mb-14">
+            <Label dark>Na Prática</Label>
+            <h2 className={`mt-3 text-[clamp(2rem,5vw,3.5rem)] font-black text-white leading-tight tracking-tight ${playfair.variable} font-[family-name:var(--font-playfair)]`}>
+              Do onboarding à escala.
             </h2>
-            <p className="text-gray-400 text-lg max-w-xl mx-auto">
-              Sem achismo. Sem "vamos ver". Um processo claro do primeiro dia até os primeiros resultados.
+            <p className="mt-3 text-white/50 text-[16px] max-w-xl leading-relaxed">
+              Um processo claro do primeiro dia até os primeiros resultados.
             </p>
           </motion.div>
 
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-80px" }}
-            className="relative"
-          >
-            {/* Vertical line */}
-            <div className="absolute left-5 top-6 bottom-6 w-px bg-dualime/20 md:left-1/2 hidden md:block" aria-hidden="true" />
-
-            <div className="space-y-8">
-              {TIMELINE.map((step, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeUp}
-                  className={`flex gap-6 items-start ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}
-                >
-                  {/* Content */}
-                  <div className={`flex-1 bg-duabg rounded-2xl p-6 border border-white/8 ${i % 2 === 0 ? "md:text-right md:pr-10" : "md:text-left md:pl-10"}`}>
-                    <div className="inline-flex items-center gap-1.5 bg-dualime/10 text-dualime text-xs font-bold px-3 py-1 rounded-full mb-3">
-                      {step.week}
-                    </div>
-                    <h3 className="text-white font-black text-lg mb-2">{step.title}</h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">{step.desc}</p>
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}
+            className="grid md:grid-cols-4 gap-6">
+            {TIMELINE.map((step, i) => (
+              <motion.div key={step.num} variants={fadeUp} className="relative">
+                {/* Connector line (desktop) */}
+                {i < TIMELINE.length - 1 && (
+                  <div className="hidden md:block absolute top-5 left-full w-full h-px bg-white/10 z-0" aria-hidden="true" />
+                )}
+                <div className="relative z-10">
+                  <div className={`w-10 h-10 rounded-full bg-dualime flex items-center justify-center mb-4 ${playfair.variable} font-[family-name:var(--font-playfair)]`}>
+                    <span className="font-black text-black text-sm">{step.num}</span>
                   </div>
-
-                  {/* Center dot (desktop) */}
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-dualime hidden md:flex items-center justify-center">
-                    <span className="font-black text-black text-sm">{i + 1}</span>
-                  </div>
-
-                  {/* Spacer for alternating layout */}
-                  <div className="flex-1 hidden md:block" />
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ─── FAQ — para SEO e IA ─── */}
-      <section className="py-24 px-6 bg-duabg" id="faq" aria-label="Perguntas frequentes sobre marketing para marcas de moda">
-        <div className="container mx-auto max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-14"
-          >
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-              Perguntas frequentes
-            </h2>
-            <p className="text-gray-400 text-lg">
-              Tudo que você precisa saber antes de conversar com a gente.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5 }}
-          >
-            {FAQS.map((item) => (
-              <FAQItem key={item.q} q={item.q} a={item.a} />
+                  <div className="text-dualime/60 text-xs font-bold tracking-wide uppercase mb-1">{step.week}</div>
+                  <h3 className="text-white font-black text-[15px] leading-snug mb-2">{step.title}</h3>
+                  <p className="text-white/50 text-[13px] leading-relaxed">{step.desc}</p>
+                </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* ─── CTA FORM ─── */}
-      <section id="contact" className="py-24 bg-dualime text-duabg text-center px-6">
-        <div className="container mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h2 className="text-4xl md:text-6xl font-black mb-6 uppercase tracking-tighter">
-              Sua marca merece<br />vender mais.
+      {/* ══════════════════════════════════════════
+          SEÇÃO 8 — FAQ (claro)
+      ══════════════════════════════════════════ */}
+      <section className="py-24 bg-[#F5F5F0] px-6" id="faq" aria-label="Perguntas frequentes sobre marketing para marcas de moda">
+        <div className="container mx-auto max-w-3xl">
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55 }} className="mb-12">
+            <Label>Dúvidas</Label>
+            <h2 className={`mt-3 text-[clamp(2rem,5vw,3.2rem)] font-black text-[#0A0A0A] leading-tight tracking-tight ${playfair.variable} font-[family-name:var(--font-playfair)]`}>
+              Perguntas frequentes
             </h2>
-            <p className="text-xl md:text-2xl font-medium mb-10 max-w-2xl mx-auto opacity-80">
-              Agende uma reunião estratégica gratuita. Vamos analisar sua marca e mostrar o que é possível.
+            <p className="mt-3 text-[#6B6B6B] text-[16px] leading-relaxed">
+              Tudo que você precisa saber antes de conversar com a gente.
             </p>
-            <div className="max-w-xl mx-auto bg-black text-white p-10 rounded-3xl shadow-2xl text-left">
-              <h3 className="text-2xl font-black mb-2">Reunião estratégica gratuita</h3>
-              <p className="text-gray-400 text-sm mb-8">
-                Preencha os dados e vamos te chamar no WhatsApp em até 1h.
-              </p>
-              <Suspense
-                fallback={
-                  <div className="h-40 flex items-center justify-center animate-pulse text-dualime">
-                    Carregando...
-                  </div>
-                }
-              >
-                <LeadForm clientSlug="dua-criativa" />
-              </Suspense>
-            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.4 }}>
+            {FAQS.map((item) => <FAQItem key={item.q} q={item.q} a={item.a} />)}
           </motion.div>
         </div>
       </section>
 
-      {/* ─── FOOTER minimal ─── */}
-      <footer className="py-10 bg-duabg border-t border-white/8 px-6" aria-label="Rodapé">
+      {/* ══════════════════════════════════════════
+          SEÇÃO 9 — CTA FORM (lime)
+      ══════════════════════════════════════════ */}
+      <section id="contact" className="py-24 bg-dualime px-6">
+        <div className="container mx-auto max-w-5xl">
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            {/* Copy lado esquerdo */}
+            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.55 }}>
+              <h2 className={`text-[clamp(2.2rem,5.5vw,3.8rem)] font-black text-black leading-[1.05] tracking-tight ${playfair.variable} font-[family-name:var(--font-playfair)]`}>
+                Sua marca merece<br />
+                vender mais.
+              </h2>
+              <p className="mt-5 text-black/60 text-[17px] leading-relaxed max-w-sm">
+                Agende uma reunião estratégica gratuita. Vamos analisar sua marca e mostrar o que é possível.
+              </p>
+              <ul className="mt-8 space-y-3">
+                {["Sem custo · Sem compromisso", "Análise real da sua marca", "Resposta em até 1 hora no WhatsApp"].map((item) => (
+                  <li key={item} className="flex items-center gap-2.5 text-black/70 text-sm font-medium">
+                    <CheckCircle2 size={16} className="text-black flex-shrink-0" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Formulário */}
+            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.55, delay: 0.1 }}>
+              <div className="bg-black rounded-3xl p-8 shadow-2xl">
+                <h3 className="text-white text-xl font-black mb-1">Reunião estratégica gratuita</h3>
+                <p className="text-white/40 text-sm mb-7">Preencha os dados e vamos te chamar no WhatsApp em até 1h.</p>
+                <Suspense fallback={<div className="h-36 flex items-center justify-center animate-pulse text-dualime text-sm">Carregando...</div>}>
+                  <LeadForm clientSlug="dua-criativa" />
+                </Suspense>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Footer minimal */}
+      <footer className="py-10 bg-black border-t border-white/8 px-6" aria-label="Rodapé">
         <div className="container mx-auto max-w-5xl flex flex-col md:flex-row items-center justify-between gap-4">
           <div className={`flex items-end gap-1 ${unbounded.className}`}>
             <span className="text-xl font-bold text-white">dua</span>
-            <span className="w-2 h-2 rounded-full bg-dualime mb-0.5" aria-hidden="true" />
-            <span className="text-gray-500 text-xs ml-1 font-normal">criativa</span>
+            <span className="w-2 h-2 rounded-full bg-dualime mb-0.5 flex-shrink-0" aria-hidden="true" />
+            <span className="text-white/30 text-xs ml-1">criativa</span>
           </div>
-          <p className="text-gray-600 text-xs text-center">
+          <p className="text-white/30 text-xs text-center">
             © {new Date().getFullYear()} Dua Criativa — Agência de Marketing para Moda · Fortaleza, CE
           </p>
-          <div className="flex items-center gap-4">
-            <a href="/" className="text-gray-500 text-xs hover:text-dualime transition-colors">
-              Página principal
-            </a>
-            <a href="#contact" className="text-gray-500 text-xs hover:text-dualime transition-colors">
-              Contato
-            </a>
+          <div className="flex items-center gap-5">
+            <a href="/" className="text-white/30 text-xs hover:text-dualime transition-colors">Página principal</a>
+            <a href="#contact" className="text-white/30 text-xs hover:text-dualime transition-colors">Contato</a>
           </div>
         </div>
       </footer>
