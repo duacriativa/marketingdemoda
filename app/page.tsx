@@ -6,6 +6,7 @@ import ParaQuem from "@/components/ParaQuem";
 import Services from "@/components/Services";
 import DuaLab from "@/components/DuaLab";
 import MiniCases from "@/components/MiniCases";
+import InstagramVideos from "@/components/InstagramVideos";
 import Methodology from "@/components/Methodology";
 import Team from "@/components/Team";
 import Feedback from "@/components/Feedback";
@@ -26,6 +27,7 @@ export default function Home() {
       <Services />
       <DuaLab />
       <MiniCases />
+      <InstagramVideos />
       <Team />
       <Feedback />
 
