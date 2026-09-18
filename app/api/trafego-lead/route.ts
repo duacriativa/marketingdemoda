@@ -1,5 +1,19 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import nodemailer from "nodemailer";
+
+// Deduplicação: mesma combinação whatsapp+interesse dentro da janela = duplo-clique
+const DEDUPE_WINDOW_MS = 30_000;
+const recentSubmissions = new Map<string, number>();
+
+function isDuplicate(key: string): boolean {
+  const now = Date.now();
+  const lastSeen = recentSubmissions.get(key);
+  for (const [k, ts] of recentSubmissions) {
+    if (now - ts > DEDUPE_WINDOW_MS) recentSubmissions.delete(k);
+  }
+  recentSubmissions.set(key, now);
+  return lastSeen !== undefined && now - lastSeen < DEDUPE_WINDOW_MS;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,16 +32,10 @@ export async function POST(req: NextRequest) {
       origem,
     } = body;
 
-    // ── Email ──────────────────────────────────────────────────────────────
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: "suporte@duacriativa.com",
-        pass: process.env.DUA_SMTP_PASS,
-      },
-    });
+    const dedupeKey = `${whatsapp}|${interesse}`;
+    if (isDuplicate(dedupeKey)) {
+      return NextResponse.json({ ok: true, duplicate: true });
+    }
 
     const interesseLabel =
       interesse === "combo"
@@ -52,31 +60,48 @@ Como atende leads: ${atendimento_leads}
 Interesse: ${interesseLabel}
 Origem: ${origem ?? "trafegopago-form"}`;
 
-    await transporter.sendMail({
-      from: "Dua Criativa <suporte@duacriativa.com>",
-      to: "suporte@duacriativa.com",
-      subject: `🔥 Novo lead — ${nome} (${interesse})`,
-      text: emailBody,
+    // ── Email em background — não bloqueia a resposta ───────────────────────
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "suporte@duacriativa.com",
+        pass: process.env.DUA_SMTP_PASS,
+      },
     });
 
-    // ── CRM ────────────────────────────────────────────────────────────────
-    try {
-      const crmRes = await fetch(
-        "https://renewed-youth-production-7d32.up.railway.app/api/v1/leads",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...body, origem: origem ?? "trafegopago-form" }),
-        }
-      );
-      if (!crmRes.ok) {
-        const errText = await crmRes.text();
-        console.error("CRM lead error:", crmRes.status, errText);
+    after(async () => {
+      try {
+        await transporter.sendMail({
+          from: "Dua Criativa <suporte@duacriativa.com>",
+          to: "suporte@duacriativa.com",
+          subject: `🔥 Novo lead — ${nome} (${interesse})`,
+          text: emailBody,
+        });
+      } catch (err) {
+        console.error("Email send failed:", err);
       }
-    } catch (crmErr) {
-      // CRM não bloqueia — email já foi enviado
-      console.error("CRM fetch failed:", crmErr);
-    }
+    });
+
+    // ── CRM em background — não bloqueia a resposta ────────────────────────
+    after(async () => {
+      try {
+        const crmRes = await fetch(
+          "https://renewed-youth-production-7d32.up.railway.app/api/v1/leads",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...body, origem: origem ?? "trafegopago-form" }),
+          }
+        );
+        if (!crmRes.ok) {
+          console.error("CRM lead error:", crmRes.status, await crmRes.text());
+        }
+      } catch (crmErr) {
+        console.error("CRM fetch failed:", crmErr);
+      }
+    });
 
     return NextResponse.json({ ok: true });
   } catch (error) {
