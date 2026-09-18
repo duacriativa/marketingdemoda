@@ -1,35 +1,33 @@
-import dynamic from "next/dynamic";
+"use client";
+
 import Hero from "@/components/Hero";
 import Clients from "@/components/Clients";
-import Services from "@/components/Services";
-import Bastidores from "@/components/Bastidores";
-import FeedPortfolio from "@/components/FeedPortfolio";
-import QuoteBanner from "@/components/QuoteBanner";
-import Feedback from "@/components/Feedback";
 import ParaQuem from "@/components/ParaQuem";
-import Methodology from "@/components/Methodology";
+import Services from "@/components/Services";
+import DuaLab from "@/components/DuaLab";
 import MiniCases from "@/components/MiniCases";
+import Methodology from "@/components/Methodology";
+import Team from "@/components/Team";
+import Feedback from "@/components/Feedback";
 import Footer from "@/components/Footer";
-import LeadForm from "@/components/LeadForm";
 import { Suspense } from "react";
+import LeadForm from "@/components/LeadForm";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-duabg text-white selection:bg-dualime selection:text-black">
       <div className="bg-dualime text-black text-center py-3 px-4 text-sm font-bold tracking-wide relative z-50">
-        ⚡ Apenas 2 vagas disponíveis para Agosto 2026 — garanta a sua agora
+        ⚡ Apenas 3 vagas disponíveis para maio 2026 — garanta a sua agora
       </div>
-
       <Hero />
       <Clients />
-      <Services />
-      <Bastidores />
-      <FeedPortfolio />
-      <QuoteBanner />
-      <Feedback />
       <ParaQuem />
       <Methodology />
+      <Services />
+      <DuaLab />
       <MiniCases />
+      <Team />
+      <Feedback />
 
       {/* CTA Section */}
       <section id="contact" className="py-24 bg-dualime text-duabg text-center">
@@ -41,11 +39,17 @@ export default function Home() {
             Não deixe dinheiro na mesa. Agende uma reunião estratégica gratuita com nosso time.
           </p>
           <div className="max-w-xl mx-auto bg-black text-white p-10 rounded-3xl shadow-2xl text-left">
-            <h3 className="text-2xl font-black mb-2">Saiba como a Dua pode ajudar a sua marca de moda!</h3>
+            <h3 className="text-2xl font-black mb-2">Agendar reunião estratégica gratuita</h3>
             <p className="text-gray-400 text-sm mb-8">
-              Preencha os dados e vamos te chamar no WhatsApp em até 10 minutos.
+              Preencha os dados e vamos te chamar no WhatsApp em até 1h.
             </p>
-            <Suspense fallback={<div className="h-40 flex items-center justify-center animate-pulse text-dualime">Carregando...</div>}>
+            <Suspense
+              fallback={
+                <div className="h-40 flex items-center justify-center animate-pulse text-dualime">
+                  Carregando...
+                </div>
+              }
+            >
               <LeadForm clientSlug="dua-criativa" />
             </Suspense>
           </div>
