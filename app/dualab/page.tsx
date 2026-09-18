@@ -172,9 +172,6 @@ export default function DuaLabPage() {
         ⚡ Apenas 3 vagas disponíveis para outubro 2026 — garanta a sua agora
       </div>
 
-      {/* ── Clientes */}
-      <Clients />
-
       {/* ══════════════════════════════════════════
           SEÇÃO 1 — HERO (escuro, parallax)
       ══════════════════════════════════════════ */}
@@ -249,6 +246,9 @@ export default function DuaLabPage() {
           </div>
         </motion.div>
       </section>
+
+      {/* ── Clientes */}
+      <Clients />
 
       {/* ══════════════════════════════════════════
           SEÇÃO 2 — STATS (claro)
