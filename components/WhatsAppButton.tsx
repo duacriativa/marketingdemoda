@@ -26,9 +26,13 @@ const WhatsAppButton = () => {
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
     const handleClick = () => {
-        pushEvent('click_lead', {
+        const params = new URLSearchParams(window.location.search);
+        pushEvent('whatsapp_click', {
             button_location: 'floating_whatsapp',
-            button_text: 'WhatsApp Button'
+            page_path: window.location.pathname,
+            utm_source: params.get('utm_source') || undefined,
+            utm_medium: params.get('utm_medium') || undefined,
+            utm_campaign: params.get('utm_campaign') || undefined,
         });
 
         // Registra clique no CRM como lead na etapa "Botão Whatsapp do Site"
