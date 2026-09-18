@@ -33,12 +33,12 @@ const unbounded = Unbounded({ subsets: ["latin"], weight: ["700"], display: "swa
 // ─── Dados de prova social
 // Adicione seus prints em /public/provas/ e liste aqui
 const PROOF_IMAGES = [
-  { src: "/provas/prova-1.jpg", caption: "R$ 300k em 1 mês — cliente de moda feminina CE" },
-  { src: "/provas/prova-2.jpg", caption: "ROAS 6.2× em 90 dias — varejo SP" },
-  { src: "/provas/prova-3.jpg", caption: "−89% no CPL — atacado moda praia CE" },
-  { src: "/provas/prova-4.jpg", caption: "Vendemos 4k em 1h após campanha" },
-  { src: "/provas/prova-5.jpg", caption: "1000 pedidos em 48h — e-commerce moda" },
-  { src: "/provas/prova-6.jpg", caption: "R$ 12k gerados em 10 minutos" },
+  { src: "/provas/prova-1.png", caption: "R$ 127k em receita — 253 pedidos · Nuvemshop" },
+  { src: "/provas/prova-2.png", caption: "R$ 2,2M em receita — 4.613 pedidos · Nuvemshop" },
+  { src: "/provas/prova-3.png", caption: "R$ 1,08M em receita — 557k visitas · Nuvemshop" },
+  { src: "/provas/prova-4.png", caption: "" },
+  { src: "/provas/prova-5.png", caption: "" },
+  { src: "/provas/prova-6.png", caption: "" },
 ];
 
 const PILLARS = [
