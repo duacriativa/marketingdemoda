@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-duabg text-white selection:bg-dualime selection:text-black">
       <div className="bg-dualime text-black text-center py-3 px-4 text-sm font-bold tracking-wide relative z-50">
-        ⚡ Apenas 3 vagas disponíveis para maio 2026 — garanta a sua agora
+        ⚡ Apenas 3 vagas disponíveis para setembro 2026 — garanta a sua agora
       </div>
       <Hero />
       <Clients />
