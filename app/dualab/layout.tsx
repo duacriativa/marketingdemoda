@@ -13,8 +13,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://duacriativa.com/og-dualab.jpg",
-        width: 1200,
-        height: 630,
+        width: 980,
+        height: 1225,
         alt: "DUA LAB — Dua Criativa, agência de marketing para marcas de moda",
       },
     ],
