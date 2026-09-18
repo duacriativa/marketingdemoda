@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { Unbounded } from "next/font/google";
@@ -126,11 +126,18 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-function ProofCard({ src, caption }: { src: string; caption: string }) {
+function ProofCard({ src, caption, onClick }: { src: string; caption: string; onClick?: () => void }) {
   const [failed, setFailed] = useState(false);
   return (
     <div className="flex flex-col gap-2">
-      <div className="relative aspect-[9/16] bg-white/5 rounded-2xl overflow-hidden border border-white/10">
+      <div
+        className={`relative aspect-[9/16] bg-white/5 rounded-2xl overflow-hidden border border-white/10 ${!failed ? "cursor-zoom-in hover:border-white/30 transition-colors" : ""}`}
+        onClick={!failed ? onClick : undefined}
+        role={!failed ? "button" : undefined}
+        tabIndex={!failed ? 0 : undefined}
+        onKeyDown={!failed ? (e) => { if (e.key === "Enter" || e.key === " ") onClick?.(); } : undefined}
+        aria-label={!failed ? `Ampliar: ${caption}` : undefined}
+      >
         {failed ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/20">
             <ImageIcon size={28} aria-hidden="true" />
@@ -158,6 +165,14 @@ function ProofCard({ src, caption }: { src: string; caption: string }) {
 export default function DuaLabPage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
+  const [lightbox, setLightbox] = useState<{ src: string; caption: string } | null>(null);
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setLightbox(null); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [lightbox]);
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const bgY = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? ["0%", "0%"] : ["0%", "28%"]);
@@ -287,10 +302,10 @@ export default function DuaLabPage() {
               </motion.div>
               <motion.h2 variants={fadeUp}
                 className={`mt-4 text-[clamp(2rem,5vw,3.5rem)] font-black text-white leading-[1.08] tracking-tight`}>
-                Não somos uma agência generalista.
+                100% focados em moda. Cada gargalo, cada oportunidade.
               </motion.h2>
               <motion.p variants={fadeUp} className="mt-6 text-white/60 text-[16px] leading-relaxed">
-                Enquanto agências genéricas aprendem sobre moda enquanto consomem seu budget, a Dua já chegou especializada. Entendemos sazonalidade de coleção, visual de marca feminina, o ciclo de compra do varejo de moda e o que faz uma campanha de lançamento converter.
+                A Dua Criativa entende o cenário completo de uma marca de moda — dos gargalos de lançamento ao caminho dos primeiros R$100k/mês e além. Entendemos sazonalidade de coleção, visual de marca feminina, o ciclo de compra do varejo de moda e o que faz uma campanha de lançamento converter.
               </motion.p>
               <motion.p variants={fadeUp} className="mt-4 text-white/60 text-[16px] leading-relaxed">
                 Pensamos como sócio, executamos como time interno. Do posicionamento ao LTV, gerenciamos o ciclo completo da sua marca.
@@ -399,7 +414,7 @@ export default function DuaLabPage() {
             className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {PROOF_IMAGES.map((img) => (
               <motion.div key={img.src} variants={fadeUp}>
-                <ProofCard src={img.src} caption={img.caption} />
+                <ProofCard src={img.src} caption={img.caption} onClick={() => setLightbox(img)} />
               </motion.div>
             ))}
           </motion.div>
@@ -550,7 +565,7 @@ export default function DuaLabPage() {
               transition={{ duration: 0.55, delay: 0.1 }}>
               <div className="bg-black rounded-3xl p-8 shadow-2xl">
                 <h3 className="text-white text-xl font-black mb-1">Reunião estratégica gratuita</h3>
-                <p className="text-white/40 text-sm mb-7">Preencha os dados e vamos te chamar no WhatsApp em até 1h.</p>
+                <p className="text-white/40 text-sm mb-7">Preencha os dados — iremos te atender em até 1 minuto.</p>
                 <Suspense fallback={<div className="h-36 flex items-center justify-center animate-pulse text-dualime text-sm">Carregando...</div>}>
                   <LeadForm clientSlug="dua-criativa" />
                 </Suspense>
@@ -559,6 +574,33 @@ export default function DuaLabPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Lightbox */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/92 flex items-center justify-center p-4 backdrop-blur-sm"
+          onClick={() => setLightbox(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Imagem ampliada"
+        >
+          <button
+            onClick={() => setLightbox(null)}
+            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-white/50 hover:text-white text-xl rounded-full border border-white/20 hover:border-white/50 transition-colors"
+            aria-label="Fechar"
+          >
+            ✕
+          </button>
+          <div className="max-w-lg w-full flex flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={lightbox.src}
+              alt={lightbox.caption}
+              className="max-h-[82dvh] w-auto rounded-2xl object-contain shadow-2xl"
+            />
+            <p className="text-white/50 text-sm text-center leading-snug">{lightbox.caption}</p>
+          </div>
+        </div>
+      )}
 
       {/* ── Footer minimal */}
       <footer className="py-10 bg-black border-t border-white/8 px-6" aria-label="Rodapé">
